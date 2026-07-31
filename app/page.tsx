@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
   ArrowDownRight, ArrowUpRight, BriefcaseBusiness, Check, ChevronLeft, ChevronRight,
   CircleDot, Code2, Command, Copy, Database, Download, ExternalLink, GraduationCap,
-  Layers3, Mail, Menu, MessageCircle, MonitorCog, Network, Pause, Play, Send,
+  Layers3, Mail, Menu, MonitorCog, Network, Pause, Play, Send,
   Settings2, Sparkles, Volume2, VolumeX, X, Zap,
 } from "lucide-react";
 
@@ -237,7 +237,7 @@ export default function Home() {
         projects: "SintegraPro · OminiSafety · Finance OS · WhatsApp Hub · Kaiky Labs.",
         skills: "TypeScript · Next.js · NestJS · PostgreSQL · automação · suporte técnico avançado.",
         education: "Ciência da Computação — UNILESTE · conclusão prevista: dez/2026.",
-        contact: "contato.kaikyrogis@gmail.com · LinkedIn · GitHub · WhatsApp.",
+        contact: "contato.kaikyrogis@gmail.com · LinkedIn · GitHub.",
         whoami: "Kaiky Rogis\nDeveloper, problem solver and systems enthusiast.\nCurrently building tools that turn complex operations into clear experiences.",
         "system-status": "All systems operational.\nPortfolio version 2.0 · GitHub Pages online.",
         "sudo hire-kaiky": "Permissão concedida. Canal de contato desbloqueado.",
@@ -389,7 +389,7 @@ export default function Home() {
         <form className="contact-form" onSubmit={(event) => { event.preventDefault(); const data = new FormData(event.currentTarget); window.location.href = `mailto:contato.kaikyrogis@gmail.com?subject=${encodeURIComponent(String(data.get("subject")))}&body=${encodeURIComponent(`Nome: ${data.get("name")}\nE-mail: ${data.get("email")}\n\n${data.get("message")}`)}`; }}>
           <label>Nome<input name="name" required placeholder="Como posso te chamar?" /></label><label>E-mail<input name="email" type="email" required placeholder="voce@empresa.com" /></label><label>Assunto<input name="subject" required placeholder="Projeto, oportunidade ou conversa" /></label><label className="full">Mensagem<textarea name="message" required rows={4} placeholder="Conte um pouco sobre o desafio…" /></label><button className="primary" type="submit">PREPARAR E-MAIL <Send size={15} /></button>
         </form>
-        <div className="contact-actions"><a href="mailto:contato.kaikyrogis@gmail.com"><Mail /> E-MAIL</a><a href="https://wa.me/5531973135206" target="_blank" rel="noreferrer"><MessageCircle /> WHATSAPP</a><a href="https://linkedin.com/in/kaikyrogis" target="_blank" rel="noreferrer"><BriefcaseBusiness /> LINKEDIN</a><a href="https://github.com/KaikyRogis" target="_blank" rel="noreferrer"><Code2 /> GITHUB</a><a href="/curriculo-kaiky-rogis.pdf" download><Download /> CURRÍCULO</a></div>
+        <div className="contact-actions"><a href="mailto:contato.kaikyrogis@gmail.com"><Mail /> E-MAIL</a><a href="https://linkedin.com/in/kaikyrogis" target="_blank" rel="noreferrer"><BriefcaseBusiness /> LINKEDIN</a><a href="https://github.com/KaikyRogis" target="_blank" rel="noreferrer"><Code2 /> GITHUB</a><a href="/curriculo-kaiky-rogis.pdf" download><Download /> CURRÍCULO</a></div>
       </section>
 
       <footer><div className="brand"><span>KR</span><b>KAIKY.ROGIS</b></div><p>KAIKY.OS · PORTFOLIO VERSION 2.0 · LAST UPDATE 31/07/2026</p><p><i /> ALL SYSTEMS OPERATIONAL</p></footer>

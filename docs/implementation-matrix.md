@@ -26,7 +26,7 @@ Esta matriz registra como cada uma das 25 seções do plano foi transformada em 
 | 13. Inovações de experiência | Modos Experiência/Profissional, paleta `Ctrl/Cmd + K`, linha narrativa, arquitetura desmontável, status do sistema e modo retrô secreto. | Concluído |
 | 14. Tecnologias | Next.js/React/TypeScript, CSS responsivo, Motion, GSAP/ScrollTrigger, React Three Fiber/Three.js e Web Audio opcional. | Concluído |
 | 15. GitHub Pages | Exportação estática, workflow de Pages, repositório `KaikyRogis.github.io` e URL canônica. | Concluído |
-| 16. Contato | E-mail, WhatsApp, LinkedIn, GitHub, currículo e formulário `mailto:` sem backend ou coleta opaca de dados. | Concluído |
+| 16. Contato | E-mail, LinkedIn, GitHub, currículo e formulário `mailto:` sem backend ou coleta opaca de dados. Nenhum número telefônico pessoal é publicado. | Concluído |
 | 17. SEO | Metadados, canonical, Open Graph, Twitter card, `robots`, manifest e JSON-LD `Person`. | Concluído |
 | 18. Performance | Imagens otimizadas pelo pipeline estático, cena 3D isolada e sob demanda, animações desativáveis, carregamento sem vídeo pesado. | Concluído |
 | 19. Acessibilidade | HTML semântico, foco visível, nomes acessíveis, textos alternativos, contraste, teclado, redução de movimento e layout responsivo. | Concluído |
@@ -34,7 +34,7 @@ Esta matriz registra como cada uma das 25 seções do plano foi transformada em 
 | 21. GitHub profissional | README do portfólio com arquitetura, recursos, execução e links; perfil público ligado no site. | Concluído |
 | 22. Plano em fases | Estratégia, estrutura, identidade, protótipo, desenvolvimento, conteúdo, QA e publicação executados no mesmo ciclo, sem eliminar nenhuma fase. | Concluído |
 | 23. Critérios de pronto | Build limpo, desktop/mobile conferidos, navegação e interações testadas, links públicos, conteúdo revisado e publicação verificada. | Concluído após a rodada final |
-| 24. Materiais necessários | Retrato real existente; e-mail e WhatsApp do currículo; currículo atualizado; screenshots públicos do SintegraPro; projetos sem logos próprios usam identidade tipográfica; disponibilidade geral; português como idioma principal; identidade azul+verde; efeitos sonoros opcionais/desligados; hobbies restritos ao Labs; domínio personalizado fica futuro. | Decidido |
+| 24. Materiais necessários | Retrato real existente; e-mail público; número pessoal deliberadamente não publicado; currículo atualizado; screenshots públicos do SintegraPro; projetos sem logos próprios usam identidade tipográfica; disponibilidade geral; português como idioma principal; identidade azul+verde; efeitos sonoros opcionais/desligados; hobbies restritos ao Labs; domínio personalizado fica futuro. | Decidido |
 | 25. Resultado esperado | A interface apresenta primeiro impacto visual e, em seguida, comprova profundidade por meio de sistemas, decisões, arquitetura e experiência. | Concluído |
 
 ## Correções editoriais obrigatórias
