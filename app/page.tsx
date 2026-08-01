@@ -826,7 +826,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                       OminiSafety<span>.</span>
                     </h2>
                   </div>
-                <b className="status-badge">● HOMOLOGAÇÃO INTERNA</b>
+                  <b className="status-badge">● HOMOLOGAÇÃO INTERNA</b>
                 </div>
                 <div className="omini-transform">
                   <div className="chaos">
