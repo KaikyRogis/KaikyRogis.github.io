@@ -248,3 +248,25 @@ test("axe has no serious or critical violations", async ({ page }) => {
     ),
   ).toEqual([]);
 });
+
+test("professional experience contains no unverified RB1 or RB4 claim", async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+
+  await page.goto("/");
+  const ptExperience = page.locator("#experience");
+  await expect(ptExperience).toContainText(
+    "Vivência com sistemas corporativos como SAP, Tasy e Ronda",
+  );
+  await expect(ptExperience).not.toContainText(/RB1|RB4|Inox/i);
+
+  await page.goto("/en/");
+  const enExperience = page.locator("#experience");
+  await expect(enExperience).toContainText(
+    "Experience with corporate systems such as SAP, Tasy and Ronda",
+  );
+  await expect(enExperience).not.toContainText(/RB1|RB4|Inox/i);
+});

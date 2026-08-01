@@ -690,9 +690,9 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   </div>
                   <div>
                     <p>
-                      Estágio na RB1/RB4 Inox · atuação administrativa e
-                      tecnológica · experiências com SAP, Tasy e Ronda ·
-                      projetos sociais e trabalhos independentes.
+                      Vivência com sistemas corporativos como SAP, Tasy e Ronda,
+                      além de trabalhos administrativos, tecnológicos e
+                      independentes.
                     </p>
                   </div>
                 </article>
