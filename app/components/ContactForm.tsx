@@ -88,7 +88,8 @@ export function ContactForm() {
         </form>
         <p className="contact-disclaimer">
           Ao continuar, abriremos o aplicativo de e-mail do seu dispositivo. Se
-          ele não estiver configurado, use “Copiar mensagem”.
+          ele não estiver configurado, use “Copiar mensagem”. Nenhum dado é
+          armazenado por este site.
         </p>
       </div>
     </Localized>

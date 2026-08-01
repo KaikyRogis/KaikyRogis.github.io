@@ -6,16 +6,18 @@ export function ProjectStatus({
   implemented,
   developing,
   roadmap,
+  developingLabel,
 }: {
   locale: Locale;
   implemented: string[];
   developing: string[];
   roadmap: string[];
+  developingLabel?: string;
 }) {
   const copy = getMessages(locale).projects.common;
   const groups = [
     [copy.implemented, implemented],
-    [copy.developing, developing],
+    [developingLabel ?? copy.developing, developing],
     [copy.roadmap, roadmap],
   ] as const;
   return (

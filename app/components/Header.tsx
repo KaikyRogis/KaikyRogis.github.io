@@ -16,6 +16,7 @@ const navigation = [
 ];
 
 type HeaderProps = {
+  activeSection: string;
   locale: Locale;
   menuOpen: boolean;
   mode: PortfolioMode;
@@ -32,6 +33,7 @@ type HeaderProps = {
 export function Header(props: HeaderProps) {
   const {
     locale,
+    activeSection,
     menuOpen,
     mode,
     motionEnabled,
@@ -54,7 +56,14 @@ export function Header(props: HeaderProps) {
           </a>
           <nav aria-label="Navegação principal">
             {navigation.map(([id, label]) => (
-              <button key={id} onClick={() => onNavigate(id)}>
+              <button
+                key={id}
+                className={activeSection === id.slice(1) ? "active" : ""}
+                aria-current={
+                  activeSection === id.slice(1) ? "location" : undefined
+                }
+                onClick={() => onNavigate(id)}
+              >
                 {label}
               </button>
             ))}
@@ -105,6 +114,10 @@ export function Header(props: HeaderProps) {
               exit={{ y: -20, opacity: 0 }}
             >
               <nav aria-label="Navegação móvel">
+                <p className="mobile-current">
+                  {locale === "pt" ? "SEÇÃO ATUAL" : "CURRENT SECTION"} ·{" "}
+                  {activeSection.toUpperCase()}
+                </p>
                 {navigation.map(([id, label], index) => (
                   <button key={id} onClick={() => onNavigate(id)}>
                     {String(index + 1).padStart(2, "0")} / {label}

@@ -25,6 +25,7 @@ export type PortfolioProject = {
   implemented: string[];
   developing: string[];
   roadmap: string[];
+  statusLabels?: { developing?: Localized };
   screenshots: ProjectShot[];
   note: Localized;
   collaboration?: {
@@ -142,6 +143,9 @@ export const projects: PortfolioProject[] = [
       "Auditoria",
     ],
     developing: ["Homologação interna", "Ajustes de produto"],
+    statusLabels: {
+      developing: { pt: "EM VALIDAÇÃO", en: "IN VALIDATION" },
+    },
     roadmap: ["Assistente inteligente", "Evolução mobile"],
     screenshots: [
       {

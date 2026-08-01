@@ -35,6 +35,7 @@ import { CustomCursor } from "./components/CustomCursor";
 import { Header, PortfolioMode } from "./components/Header";
 import { Magnetic } from "./components/Magnetic";
 import { Terminal } from "./components/Terminal";
+import { SkillsAccordion } from "./components/SkillsAccordion";
 import { ProjectCase } from "./components/projects/ProjectCase";
 import { ProjectRail } from "./components/projects/ProjectRail";
 import {
@@ -96,6 +97,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   const [activeLayer, setActiveLayer] = useState(0);
   const [retro, setRetro] = useState(false);
   const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState("about");
   const [pageProgress, setPageProgress] = useState(0);
   const projectPin = useRef<HTMLElement>(null);
   const projectRail = useRef<HTMLDivElement>(null);
@@ -120,7 +122,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveProject((visible.target as HTMLElement).id);
+        if (visible) {
+          setActiveProject((visible.target as HTMLElement).id);
+          setActiveSection("projects");
+        }
       },
       { rootMargin: "-34% 0px -52%", threshold: [0, 0.2, 0.5] },
     );
@@ -128,10 +133,31 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
       const node = document.getElementById(project.slug);
       if (node) observer.observe(node);
     });
+    const navigationObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection((visible.target as HTMLElement).id);
+      },
+      { rootMargin: "-28% 0px -60%", threshold: [0, 0.15, 0.4] },
+    );
+    [
+      "about",
+      "capabilities",
+      "projects",
+      "experience",
+      "education",
+      "contact",
+    ].forEach((id) => {
+      const node = document.getElementById(id);
+      if (node) navigationObserver.observe(node);
+    });
     window.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
     return () => {
       observer.disconnect();
+      navigationObserver.disconnect();
       window.removeEventListener("scroll", updateProgress);
     };
   }, []);
@@ -317,6 +343,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
           <CustomCursor />
           <Header
             locale={locale}
+            activeSection={activeSection}
             menuOpen={menuOpen}
             mode={mode}
             motionEnabled={motionEnabled}
@@ -336,7 +363,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             onSoundToggle={() => setSoundEnabled((value) => !value)}
           />
           <aside
-            className={`section-progress ${activeProject ? "visible" : ""}`}
+            className={`section-progress ${activeProject && activeSection !== "contact" ? "visible" : ""}`}
             aria-live="polite"
           >
             <span className="desktop-progress">
@@ -355,6 +382,26 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
               <b style={{ width: `${pageProgress}%` }} />
             </i>
             <em>{pageProgress}%</em>
+            <details className="mobile-dock-menu">
+              <summary aria-label="Abrir controles da experiência">•••</summary>
+              <div>
+                <button
+                  onClick={() => setMotionEnabled(!motionEnabled)}
+                  aria-pressed={!motionEnabled}
+                >
+                  {motionEnabled ? <Pause /> : <Play />} Movimento
+                </button>
+                <button
+                  onClick={() => setSoundEnabled(!soundEnabled)}
+                  aria-pressed={soundEnabled}
+                >
+                  {soundEnabled ? <Volume2 /> : <VolumeX />} Som
+                </button>
+                <button onClick={() => setTerminalOpen(true)}>
+                  <Code2 /> Terminal
+                </button>
+              </div>
+            </details>
           </aside>
 
           <main
@@ -1138,16 +1185,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   nível de contato real.
                 </p>
               </div>
-              <div className="skill-grid">
-                {Object.entries(skills).map(([group, items]) => (
-                  <article key={group}>
-                    <h3>{group}</h3>
-                    {items.map((item) => (
-                      <p key={item}>{item}</p>
-                    ))}
-                  </article>
-                ))}
-              </div>
+              <SkillsAccordion groups={skills} />
             </section>
 
             <section className="education" id="education">
@@ -1229,13 +1267,15 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                 <span>KR</span>
                 <b>KAIKY.ROGIS</b>
               </div>
-              <p>KAIKY.OS · PORTFOLIO VERSION 2.3</p>
+              <p>KAIKY.OS · PORTFOLIO VERSION 2.4</p>
               <p>
                 <i /> ALL SYSTEMS OPERATIONAL
               </p>
             </footer>
 
-            <div className="utility-dock">
+            <div
+              className={`utility-dock ${activeSection === "contact" ? "dock-suppressed" : ""}`}
+            >
               <button
                 onClick={() => setMotionEnabled(!motionEnabled)}
                 aria-label={

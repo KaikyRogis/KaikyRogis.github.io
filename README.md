@@ -54,7 +54,7 @@ npm run check:links
 npm run monitor
 ```
 
-O build estático é gerado em `out/`. A versão 2.3 adota uma experiência de projetos orientada por evidências: capturas reais primeiro, status técnico explícito, atribuição de colaboradores, lightbox acessível, imagens WebP e navegação responsiva.
+O build estático é gerado em `out/`. A versão 2.4 mantém a experiência orientada por evidências e adiciona ergonomia mobile própria: trilho natural, controles compactos com área segura, galerias sem repetição, competências em acordeão e polimento visual responsivo.
 
 ## Validação local
 

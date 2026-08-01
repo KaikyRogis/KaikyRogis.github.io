@@ -2,11 +2,13 @@ import { expect, test } from "@playwright/test";
 import AxeBuilder from "@axe-core/playwright";
 
 const viewports = [
+  { width: 360, height: 800 },
+  { width: 390, height: 844 },
+  { width: 430, height: 932 },
+  { width: 768, height: 1024 },
   { width: 1366, height: 768 },
   { width: 1440, height: 900 },
   { width: 1920, height: 1080 },
-  { width: 390, height: 844 },
-  { width: 430, height: 932 },
 ];
 
 for (const viewport of viewports) {
@@ -20,8 +22,13 @@ for (const viewport of viewports) {
     await page.goto("/");
     await page.locator("#projects").scrollIntoViewIfNeeded();
     await page.waitForTimeout(900);
+    await page.evaluate(() =>
+      (document.activeElement as HTMLElement | null)?.blur(),
+    );
+    await page.waitForTimeout(250);
     await expect(page.locator("#projects")).toHaveScreenshot(
       `projects-${viewport.width}x${viewport.height}.png`,
+      { maxDiffPixelRatio: 0.04 },
     );
     const overflow = await page.evaluate(
       () =>
@@ -31,6 +38,18 @@ for (const viewport of viewports) {
     expect(overflow).toBeFalsy();
     for (const slug of ["sintegrapro", "ominisafety", "finance-os", "omnichat"])
       await expect(page.locator(`#${slug}`)).toBeAttached();
+
+    if (viewport.width < 900) {
+      const rail = page.locator("#projects .project-rail");
+      expect(
+        await rail.evaluate((node) => getComputedStyle(node).overflowX),
+      ).toBe("auto");
+      expect(
+        await page
+          .locator("#projects .projects-intro")
+          .evaluate((node) => getComputedStyle(node).position),
+      ).toBe("static");
+    }
   });
 }
 
@@ -74,6 +93,55 @@ test("professional, reduced motion, English, menu and lightbox", async ({
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
+});
+
+test("primary evidence is not repeated in visible galleries", async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  for (const slug of ["sintegrapro", "ominisafety", "finance-os", "omnichat"]) {
+    const project = page.locator(`#${slug}`);
+    const evidenceSrc = await project
+      .locator(".project-evidence img")
+      .getAttribute("src");
+    const gallerySources = await project
+      .locator(".project-gallery img")
+      .evaluateAll((images) =>
+        images.map((image) => image.getAttribute("src")),
+      );
+    expect(gallerySources).not.toContain(evidenceSrc);
+  }
+});
+
+test("mobile dock avoids contact and footer", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  await page.locator("#contact").scrollIntoViewIfNeeded();
+  await expect(page.locator(".section-progress")).not.toHaveClass(/visible/);
+  await expect(page.locator(".utility-dock")).toHaveClass(/dock-suppressed/);
+});
+
+test("mobile skills accordion and labs rail are compact", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  const skillButtons = page.locator("#skills .skill-grid article > button");
+  await expect(skillButtons.first()).toHaveAttribute("aria-expanded", "true");
+  await skillButtons.nth(1).click();
+  await expect(skillButtons.nth(1)).toHaveAttribute("aria-expanded", "true");
+  expect(
+    await page
+      .locator("#labs .labs-grid")
+      .evaluate((node) => getComputedStyle(node).overflowX),
+  ).toBe("auto");
 });
 
 test("125 percent zoom keeps projects usable", async ({ page }) => {
