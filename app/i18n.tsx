@@ -274,8 +274,8 @@ const english: Record<string, string> = {
   "Rotinas administrativas e sistemas corporativos com SAP Logon 750, organização de processos, controle de dados e suporte a operações internas.":
     "Administrative routines and corporate systems using SAP Logon 750, process organization, data control and internal operations support.",
   "EXPERIÊNCIAS COMPLEMENTARES": "ADDITIONAL EXPERIENCE",
-  "Estágio na RB1/RB4 Inox · atuação administrativa e tecnológica · experiências com SAP, Tasy e Ronda · projetos sociais e trabalhos independentes.":
-    "Internship at RB1/RB4 Inox · administrative and technology work · experience with SAP, Tasy and Ronda · social projects and independent work.",
+  "Vivência com sistemas corporativos como SAP, Tasy e Ronda, além de trabalhos administrativos, tecnológicos e independentes.":
+    "Experience with corporate systems such as SAP, Tasy and Ronda, as well as administrative, technology and independent work.",
   "MAPA TÉCNICO": "TECHNICAL MAP",
   "Competência com": "Skills with",
   "contexto.": "context.",

@@ -252,7 +252,7 @@ try {
     path.join(outputRoot, "manifest.json"),
     `${JSON.stringify(
       {
-        version: "2.4.1",
+        version: "2.4.2",
         generatedAt: new Date().toISOString(),
         baseURL,
         desktop: desktop.map((file) => path.basename(file)),
