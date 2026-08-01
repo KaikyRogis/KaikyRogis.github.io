@@ -20,6 +20,11 @@ for (const viewport of viewports) {
       sessionStorage.setItem("kaiky-os-visited", "1"),
     );
     await page.goto("/");
+    if (viewport.width <= 430)
+      await expect(page.locator("#content")).toHaveScreenshot(
+        `hero-${viewport.width}x${viewport.height}.png`,
+        { maxDiffPixelRatio: 0.04 },
+      );
     await page.locator("#projects").scrollIntoViewIfNeeded();
     await page.waitForTimeout(900);
     await page.evaluate(() =>
@@ -114,6 +119,39 @@ test("primary evidence is not repeated in visible galleries", async ({
       );
     expect(gallerySources).not.toContain(evidenceSrc);
   }
+});
+
+test("status grids omit empty groups and adapt their columns", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+
+  const expectedGroups: Record<string, number> = {
+    sintegrapro: 2,
+    ominisafety: 3,
+    "finance-os": 3,
+    omnichat: 3,
+  };
+
+  for (const [slug, expected] of Object.entries(expectedGroups)) {
+    const grid = page.locator(`#${slug} .project-status-grid`);
+    await expect(grid).toHaveAttribute("data-status-groups", String(expected));
+    await expect(grid.locator(":scope > section")).toHaveCount(expected);
+    await expect(grid.locator(":scope > section:empty")).toHaveCount(0);
+  }
+
+  const sintegraGrid = page.locator("#sintegrapro .project-status-grid");
+  const columns = await sintegraGrid.evaluate(
+    (node) => getComputedStyle(node).gridTemplateColumns.split(" ").length,
+  );
+  expect(columns).toBe(2);
+  await expect(sintegraGrid).toHaveScreenshot(
+    "sintegrapro-status-1440x900.png",
+  );
 });
 
 test("mobile dock avoids contact and footer", async ({ page }) => {

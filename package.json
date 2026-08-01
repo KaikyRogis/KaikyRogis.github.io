@@ -1,6 +1,6 @@
 {
   "name": "kaiky-rogis-portfolio",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -21,6 +21,7 @@
     "monitor": "node scripts/monitor-site.mjs",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
+    "capture:qa": "npm run build && node scripts/capture-qa.mjs",
     "check:images": "node scripts/check-image-budget.mjs",
     "quality": "npm run format:check && npm run typecheck && npm run lint && npm run check:images && npm run build && npm run check:links"
   },
@@ -36,9 +37,9 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
-    "@playwright/test": "^1.54.2",
-    "@cloudflare/vite-plugin": "1.37.1",
     "@axe-core/playwright": "^4.10.2",
+    "@cloudflare/vite-plugin": "1.37.1",
+    "@playwright/test": "^1.54.2",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
@@ -48,8 +49,9 @@
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.2.12",
     "prettier": "^3.8.2",
-    "serve": "^14.2.4",
     "react-server-dom-webpack": "19.2.6",
+    "serve": "^14.2.4",
+    "sharp": "0.35.3",
     "typescript": "5.9.3",
     "vinext": "0.0.50",
     "vite": "8.0.13",

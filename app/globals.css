@@ -2771,7 +2771,7 @@ footer {
   }
 }
 
-/* Portfolio 2.4 — Visual polish & mobile ergonomics */
+/* Portfolio 2.4.1 — Visual stability & capture QA */
 .evidence-case {
   --project-accent: var(--cyan);
 }
@@ -3069,8 +3069,8 @@ footer {
     letter-spacing: 0.12em;
   }
   .portrait-wrap {
-    opacity: 0.74;
-    transform: translateY(48px);
+    opacity: 0.7;
+    transform: translateY(64px) scale(0.94);
     -webkit-mask-image: linear-gradient(
       to bottom,
       transparent 0%,
@@ -3085,6 +3085,11 @@ footer {
       #000 78%,
       transparent 100%
     );
+  }
+  .hero-buttons .secondary {
+    background: rgba(5, 8, 13, 0.84);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
   }
   .case-summary,
   .project-contribution > p,
@@ -3415,10 +3420,57 @@ footer > p:nth-child(2) {
   max-width: 1180px;
   margin: 0 auto 72px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
+}
+.project-status-grid[data-status-groups="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+.project-status-grid[data-status-groups="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.project-status-grid[data-status-groups="3"] {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+html[data-capture="true"] {
+  scroll-behavior: auto !important;
+}
+html[data-capture="true"] *,
+html[data-capture="true"] *::before,
+html[data-capture="true"] *::after {
+  animation-delay: 0s !important;
+  animation-duration: 0s !important;
+  scroll-behavior: auto !important;
+  transition-delay: 0s !important;
+  transition-duration: 0s !important;
+}
+html[data-capture="true"] .boot,
+html[data-capture="true"] .nav,
+html[data-capture="true"] .skip-link,
+html[data-capture="true"] .hero-scene,
+html[data-capture="true"] .cursor,
+html[data-capture="true"] .section-progress,
+html[data-capture="true"] .utility-dock,
+html[data-capture="true"] .scroll {
+  display: none !important;
+}
+html[data-capture="true"] .projects-cinema {
+  min-height: auto !important;
+  overflow: visible !important;
+  padding-bottom: 64px !important;
+}
+html[data-capture="true"] .projects-intro {
+  position: static !important;
+  opacity: 1 !important;
+  transform: none !important;
+  visibility: visible !important;
+}
+html[data-capture="true"] .project-rail {
+  position: static !important;
+  transform: none !important;
 }
 .project-status-grid section {
   padding: 26px;
@@ -3797,6 +3849,9 @@ footer > p:nth-child(2) {
   .project-status-grid {
     grid-template-columns: 1fr;
     margin-bottom: 50px;
+  }
+  .project-status-grid[data-status-groups] {
+    grid-template-columns: 1fr;
   }
   .project-gallery-track {
     display: flex;

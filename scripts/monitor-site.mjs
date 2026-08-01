@@ -1,5 +1,5 @@
 const checks = [
-  ["https://kaikyrogis.github.io/", "PORTFOLIO VERSION 2.4"],
+  ["https://kaikyrogis.github.io/", "PORTFOLIO VERSION 2.4.1"],
   ["https://kaikyrogis.github.io/en/", "DIGITAL EXPERIENCES DEVELOPER"],
   ["https://kaikyrogis.github.io/robots.txt", "User-agent"],
   ["https://kaikyrogis.github.io/sitemap.xml", "kaikyrogis.github.io/en/"],
