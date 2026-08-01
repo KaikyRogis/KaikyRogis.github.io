@@ -1,0 +1,35 @@
+export const en = {
+  projects: {
+    rail: {
+      eyebrow: "03 / SYSTEMS IN THE FIELD",
+      title: "Projects built around real problems.",
+      description:
+        "Scroll through real systems, technical decisions and clearly attributed responsibilities.",
+      mobileDescription: "Swipe to explore the projects.",
+      open: "OPEN CASE STUDY",
+      end: "Now, enter the systems.",
+      continue: "CONTINUE",
+    },
+    common: {
+      problem: "PROBLEM",
+      solution: "SOLUTION",
+      role: "MY ROLE",
+      stack: "IMPLEMENTED STACK",
+      scope: "SCOPE",
+      evidence: "PRIMARY EVIDENCE",
+      contribution: "CONTRIBUTION",
+      implemented: "IMPLEMENTED",
+      developing: "IN DEVELOPMENT",
+      roadmap: "ROADMAP",
+      gallery: "GALLERY",
+      expand: "EXPAND ↗",
+      openGallery: "OPEN GALLERY",
+      demo: "DEMONSTRATION ENVIRONMENT",
+      previous: "Previous image",
+      next: "Next image",
+      close: "Close gallery",
+      zoomIn: "Zoom in",
+      zoomOut: "Zoom out",
+    },
+  },
+} as const;

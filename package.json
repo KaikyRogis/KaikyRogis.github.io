@@ -1,6 +1,6 @@
 {
   "name": "kaiky-rogis-portfolio",
-  "version": "2.1.0",
+  "version": "2.3.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -12,13 +12,17 @@
     "build:sites": "vinext build",
     "dev:sites": "vinext dev",
     "start:sites": "vinext start",
+    "serve:test": "serve out -l 4173 --no-clipboard",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check:links": "node scripts/check-static-links.mjs",
     "monitor": "node scripts/monitor-site.mjs",
-    "quality": "npm run format:check && npm run typecheck && npm run lint && npm run build && npm run check:links"
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots",
+    "check:images": "node scripts/check-image-budget.mjs",
+    "quality": "npm run format:check && npm run typecheck && npm run lint && npm run check:images && npm run build && npm run check:links"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
@@ -32,7 +36,9 @@
     "three": "^0.185.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.54.2",
     "@cloudflare/vite-plugin": "1.37.1",
+    "@axe-core/playwright": "^4.10.2",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
@@ -42,6 +48,7 @@
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.2.12",
     "prettier": "^3.8.2",
+    "serve": "^14.2.4",
     "react-server-dom-webpack": "19.2.6",
     "typescript": "5.9.3",
     "vinext": "0.0.50",

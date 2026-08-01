@@ -88,11 +88,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `if(location.pathname.startsWith('/en'))document.documentElement.lang='en';`,
-          }}
-        />
         {children}
         <script
           type="application/ld+json"
