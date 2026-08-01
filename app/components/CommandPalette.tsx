@@ -21,6 +21,7 @@ import {
   Play,
 } from "lucide-react";
 import { useDialogFocus } from "../hooks/useDialogFocus";
+import { Localized } from "../i18n";
 
 type Action = {
   label: string;
@@ -144,77 +145,81 @@ export function CommandPalette({
   }
 
   return (
-    <motion.div
-      className="modal"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
-    >
+    <Localized>
       <motion.div
-        ref={dialogRef}
-        className="palette"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="palette-title"
-        initial={{ scale: 0.96, y: -15 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.96, y: -15 }}
+        className="modal"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onMouseDown={(event) =>
+          event.target === event.currentTarget && onClose()
+        }
       >
-        <form className="palette-top" onSubmit={submit}>
-          <Command />
-          <label className="sr-only" htmlFor="palette-search">
-            Pesquisar ações
-          </label>
-          <input
-            id="palette-search"
-            data-autofocus
-            value={query}
-            onChange={(event) => {
-              setQuery(event.target.value);
-              setSelected(0);
-            }}
-            onKeyDown={handleKeyDown}
-            placeholder="Navegar pelo sistema…"
-            aria-controls="palette-results"
-            aria-activedescendant={
-              filtered[safeSelected]
-                ? `palette-action-${safeSelected}`
-                : undefined
-            }
-          />
-          <button type="button" onClick={onClose}>
-            ESC
-          </button>
-        </form>
-        <p id="palette-title">NAVEGAÇÃO E AÇÕES · USE ↑ ↓ E ENTER</p>
-        <div
-          id="palette-results"
-          role="listbox"
-          aria-label="Resultados da busca"
+        <motion.div
+          ref={dialogRef}
+          className="palette"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="palette-title"
+          initial={{ scale: 0.96, y: -15 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.96, y: -15 }}
         >
-          {filtered.map((action, index) => (
-            <button
-              id={`palette-action-${index}`}
-              role="option"
-              aria-selected={safeSelected === index}
-              className={safeSelected === index ? "selected" : ""}
-              key={action.label}
-              onMouseEnter={() => setSelected(index)}
-              onClick={() => execute(action)}
-            >
-              {action.icon}
-              <span>{action.label}</span>
-              <kbd>{String(index + 1).padStart(2, "0")}</kbd>
+          <form className="palette-top" onSubmit={submit}>
+            <Command />
+            <label className="sr-only" htmlFor="palette-search">
+              Pesquisar ações
+            </label>
+            <input
+              id="palette-search"
+              data-autofocus
+              value={query}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                setSelected(0);
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Navegar pelo sistema…"
+              aria-controls="palette-results"
+              aria-activedescendant={
+                filtered[safeSelected]
+                  ? `palette-action-${safeSelected}`
+                  : undefined
+              }
+            />
+            <button type="button" onClick={onClose}>
+              ESC
             </button>
-          ))}
-          {filtered.length === 0 && (
-            <p className="palette-empty" aria-live="polite">
-              Nenhuma ação encontrada.
-            </p>
-          )}
-        </div>
+          </form>
+          <p id="palette-title">NAVEGAÇÃO E AÇÕES · USE ↑ ↓ E ENTER</p>
+          <div
+            id="palette-results"
+            role="listbox"
+            aria-label="Resultados da busca"
+          >
+            {filtered.map((action, index) => (
+              <button
+                id={`palette-action-${index}`}
+                role="option"
+                aria-selected={safeSelected === index}
+                className={safeSelected === index ? "selected" : ""}
+                key={action.label}
+                onMouseEnter={() => setSelected(index)}
+                onClick={() => execute(action)}
+              >
+                {action.icon}
+                <span>{action.label}</span>
+                <kbd>{String(index + 1).padStart(2, "0")}</kbd>
+              </button>
+            ))}
+            {filtered.length === 0 && (
+              <p className="palette-empty" aria-live="polite">
+                Nenhuma ação encontrada.
+              </p>
+            )}
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </Localized>
   );
 }

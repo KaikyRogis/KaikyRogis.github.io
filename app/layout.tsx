@@ -19,7 +19,10 @@ export const metadata: Metadata = {
     "SintegraPro",
     "OminiSafety",
   ],
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    languages: { "pt-BR": "/", en: "/en/" },
+  },
   robots: { index: true, follow: true },
   manifest: "/site.webmanifest",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
@@ -85,6 +88,11 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(location.pathname.startsWith('/en'))document.documentElement.lang='en';`,
+          }}
+        />
         {children}
         <script
           type="application/ld+json"

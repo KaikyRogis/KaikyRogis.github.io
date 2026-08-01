@@ -1,21 +1,24 @@
 {
   "name": "kaiky-rogis-portfolio",
-  "version": "0.1.0",
+  "version": "2.1.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:pages": "next build",
+    "build": "next build && node scripts/fix-static-lang.mjs",
+    "build:pages": "next build && node scripts/fix-static-lang.mjs",
     "build:sites": "vinext build",
     "dev:sites": "vinext dev",
     "start:sites": "vinext start",
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check:links": "node scripts/check-static-links.mjs",
+    "monitor": "node scripts/monitor-site.mjs",
+    "quality": "npm run format:check && npm run typecheck && npm run lint && npm run build && npm run check:links"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",
