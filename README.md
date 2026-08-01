@@ -54,7 +54,17 @@ npm run check:links
 npm run monitor
 ```
 
-O build estático é gerado em `out/`. A versão 2.1 inclui navegação por teclado, redução real de movimento, busca funcional em `Ctrl + K`, imagens WebP e controles completos no mobile.
+O build estático é gerado em `out/`. A versão 2.3 adota uma experiência de projetos orientada por evidências: capturas reais primeiro, status técnico explícito, atribuição de colaboradores, lightbox acessível, imagens WebP e navegação responsiva.
+
+## Validação local
+
+```bash
+npm ci
+npm run quality
+npm run build:sites
+npm audit --omit=dev
+npm run test:visual
+```
 
 ## Licença e conteúdo
 

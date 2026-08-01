@@ -48,7 +48,7 @@ export const projectCards = [
     slug: "ominisafety",
     title: "OminiSafety",
     type: "SaaS B2B de segurança do trabalho",
-    status: "AJUSTES FINAIS / HOMOLOGAÇÃO",
+    status: "HOMOLOGAÇÃO INTERNA",
     accent: "#30e88a",
     summary:
       "Produto multiempresa em homologação, com treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis.",
@@ -63,7 +63,7 @@ export const projectCards = [
     accent: "#ff9d2e",
     summary:
       "Arquitetura monorepo para despesas, objetivos, relatórios, wishlist e decisões financeiras com web, API e mobile.",
-    tech: ["Monorepo", "Web", "API", "Mobile", "IA"],
+    tech: ["Monorepo", "Web", "API", "PostgreSQL"],
   },
   {
     id: "04",
@@ -74,7 +74,7 @@ export const projectCards = [
     accent: "#8b7cff",
     summary:
       "Plataforma colaborativa de atendimento com frontend desenvolvido por Hauan Felipe e backend em desenvolvimento por Kaiky Rogis.",
-    tech: ["WhatsApp", "Filas", "Chatbot", "Meta API", "VoIP"],
+    tech: ["Filas", "Departamentos", "Conversas", "Agenda"],
   },
 ] as const;
 

@@ -46,8 +46,10 @@ Esta matriz registra como cada uma das 25 seções do plano foi transformada em 
 
 ## Verificações de aceite
 
-- `pnpm exec next build`
-- `pnpm exec vinext build`
+- `npm ci`
+- `npm run quality`
+- `npm run build:sites`
+- `npm audit --omit=dev`
 - inspeção em desktop e viewport móvel
 - imagens sem erro e sem overflow horizontal
 - navegação, menu, galeria, arquitetura, terminal e paleta de comandos

@@ -1,0 +1,22 @@
+import { defineConfig } from "@playwright/test";
+
+export default defineConfig({
+  testDir: "./tests/visual",
+  fullyParallel: true,
+  forbidOnly: true,
+  retries: process.env.CI ? 2 : 0,
+  reporter: process.env.CI ? "github" : "list",
+  use: {
+    baseURL: "http://127.0.0.1:4173",
+    colorScheme: "dark",
+  },
+  expect: {
+    toHaveScreenshot: { maxDiffPixelRatio: 0.015, animations: "disabled" },
+  },
+  webServer: {
+    command: "npm run build && npm run serve:test",
+    url: "http://127.0.0.1:4173",
+    reuseExistingServer: !process.env.CI,
+    timeout: 120_000,
+  },
+});

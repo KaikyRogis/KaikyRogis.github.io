@@ -41,7 +41,7 @@ export function Terminal({
   const dialogRef = useRef<HTMLDivElement>(null);
   const [command, setCommand] = useState("");
   const [history, setHistory] = useState<string[]>([
-    "Kaiky.OS 2.1 — digite “help” para listar os comandos.",
+    "Kaiky.OS 2.3 — digite “help” para listar os comandos.",
   ]);
   const close = useCallback(() => onClose(), [onClose]);
   useDialogFocus(true, dialogRef, close);
@@ -68,7 +68,7 @@ export function Terminal({
         whoami:
           "Kaiky Rogis\nDeveloper, problem solver and systems enthusiast.\nCurrently building tools that turn complex operations into clear experiences.",
         "system-status":
-          "All systems operational.\nPortfolio version 2.1 · GitHub Pages online.",
+          "All systems operational.\nPortfolio version 2.3 · GitHub Pages online.",
         "sudo hire-kaiky":
           "Permissão concedida. Canal de contato desbloqueado.",
         coffee: "☕ Café convertido em sistemas. Operação estável.",

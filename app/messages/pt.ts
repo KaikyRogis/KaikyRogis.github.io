@@ -1,0 +1,35 @@
+export const pt = {
+  projects: {
+    rail: {
+      eyebrow: "03 / SISTEMAS EM CAMPO",
+      title: "Projetos com problemas reais.",
+      description:
+        "Role para atravessar sistemas reais, decisões técnicas e responsabilidades claramente atribuídas.",
+      mobileDescription: "Deslize para explorar os projetos.",
+      open: "ABRIR ESTUDO",
+      end: "Agora, entre nos sistemas.",
+      continue: "CONTINUAR",
+    },
+    common: {
+      problem: "PROBLEMA",
+      solution: "SOLUÇÃO",
+      role: "MEU PAPEL",
+      stack: "STACK IMPLEMENTADA",
+      scope: "ESCOPO",
+      evidence: "EVIDÊNCIA PRINCIPAL",
+      contribution: "CONTRIBUIÇÃO",
+      implemented: "IMPLEMENTADO",
+      developing: "EM DESENVOLVIMENTO",
+      roadmap: "ROADMAP",
+      gallery: "GALERIA",
+      expand: "AMPLIAR ↗",
+      openGallery: "ABRIR GALERIA",
+      demo: "AMBIENTE DEMONSTRATIVO",
+      previous: "Imagem anterior",
+      next: "Próxima imagem",
+      close: "Fechar galeria",
+      zoomIn: "Ampliar imagem",
+      zoomOut: "Reduzir imagem",
+    },
+  },
+} as const;
