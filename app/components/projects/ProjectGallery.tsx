@@ -22,6 +22,7 @@ export function ProjectGallery({
   const [active, setActive] = useState<number | null>(null);
   const triggers = useRef<Array<HTMLButtonElement | null>>([]);
   const copy = getMessages(locale).projects.common;
+  const visibleShots = shots.slice(1);
   const close = () => {
     const index = active;
     setActive(null);
@@ -37,48 +38,44 @@ export function ProjectGallery({
     >
       <div className="gallery-heading">
         <span>{copy.gallery}</span>
-        <b>{String(shots.length).padStart(2, "0")} CAPTURAS</b>
+        <b>{String(visibleShots.length).padStart(2, "0")} CAPTURAS</b>
       </div>
       <div className="project-gallery-track">
-        {shots.map((shot, index) => (
-          <figure
-            key={shot.src}
-            className={index === 0 ? "primary" : "secondary"}
-          >
-            <button
-              ref={(node) => {
-                triggers.current[index] = node;
-              }}
-              onClick={() => setActive(index)}
-              data-cursor="ZOOM"
-              aria-label={`${copy.expand}: ${shot.caption[locale]}`}
-            >
-              <Image
-                src={shot.src}
-                alt={shot.alt[locale]}
-                width={shot.width}
-                height={shot.height}
-                sizes={
-                  index === 0
-                    ? "(max-width: 720px) 94vw, 86vw"
-                    : "(max-width: 720px) 78vw, 42vw"
-                }
-                loading="lazy"
-              />
-              <span className="demo-watermark">{copy.demo}</span>
-              <span className="expand-label">
-                <Expand /> {copy.expand}
-              </span>
-            </button>
-            <figcaption>
-              <span>
-                {String(index + 1).padStart(2, "0")} /{" "}
-                {String(shots.length).padStart(2, "0")}
-              </span>
-              {shot.caption[locale]}
-            </figcaption>
-          </figure>
-        ))}
+        {visibleShots.map((shot, index) => {
+          const lightboxIndex = index + 1;
+          return (
+            <figure key={shot.src} className="secondary">
+              <button
+                ref={(node) => {
+                  triggers.current[lightboxIndex] = node;
+                }}
+                onClick={() => setActive(lightboxIndex)}
+                data-cursor="ZOOM"
+                aria-label={`${copy.expand}: ${shot.caption[locale]}`}
+              >
+                <Image
+                  src={shot.src}
+                  alt={shot.alt[locale]}
+                  width={shot.width}
+                  height={shot.height}
+                  sizes="(max-width: 720px) 78vw, 42vw"
+                  loading="lazy"
+                />
+                <span className="demo-watermark">{copy.demo}</span>
+                <span className="expand-label">
+                  <Expand /> {copy.expand}
+                </span>
+              </button>
+              <figcaption>
+                <span>
+                  {String(lightboxIndex + 1).padStart(2, "0")} /{" "}
+                  {String(shots.length).padStart(2, "0")}
+                </span>
+                {shot.caption[locale]}
+              </figcaption>
+            </figure>
+          );
+        })}
       </div>
       <button className="open-gallery" onClick={() => setActive(0)}>
         {copy.openGallery}{" "}

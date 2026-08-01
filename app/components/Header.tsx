@@ -15,7 +15,13 @@ const navigation = [
   ["#contact", "Contato"],
 ];
 
+const supplementarySectionLabels = {
+  labs: { pt: "Kaiky Labs", en: "Kaiky Labs" },
+  skills: { pt: "Competências", en: "Skills" },
+};
+
 type HeaderProps = {
+  activeSection: string;
   locale: Locale;
   menuOpen: boolean;
   mode: PortfolioMode;
@@ -32,6 +38,7 @@ type HeaderProps = {
 export function Header(props: HeaderProps) {
   const {
     locale,
+    activeSection,
     menuOpen,
     mode,
     motionEnabled,
@@ -43,6 +50,12 @@ export function Header(props: HeaderProps) {
     onPaletteOpen,
     onSoundToggle,
   } = props;
+  const currentSectionLabel =
+    navigation.find(([id]) => id.slice(1) === activeSection)?.[1] ??
+    supplementarySectionLabels[
+      activeSection as keyof typeof supplementarySectionLabels
+    ]?.[locale] ??
+    activeSection;
 
   return (
     <Localized>
@@ -54,7 +67,14 @@ export function Header(props: HeaderProps) {
           </a>
           <nav aria-label="Navegação principal">
             {navigation.map(([id, label]) => (
-              <button key={id} onClick={() => onNavigate(id)}>
+              <button
+                key={id}
+                className={activeSection === id.slice(1) ? "active" : ""}
+                aria-current={
+                  activeSection === id.slice(1) ? "location" : undefined
+                }
+                onClick={() => onNavigate(id)}
+              >
                 {label}
               </button>
             ))}
@@ -105,8 +125,18 @@ export function Header(props: HeaderProps) {
               exit={{ y: -20, opacity: 0 }}
             >
               <nav aria-label="Navegação móvel">
+                <p className="mobile-current">
+                  {locale === "pt" ? "SEÇÃO ATUAL" : "CURRENT SECTION"} ·{" "}
+                  {currentSectionLabel}
+                </p>
                 {navigation.map(([id, label], index) => (
-                  <button key={id} onClick={() => onNavigate(id)}>
+                  <button
+                    key={id}
+                    aria-current={
+                      activeSection === id.slice(1) ? "location" : undefined
+                    }
+                    onClick={() => onNavigate(id)}
+                  >
                     {String(index + 1).padStart(2, "0")} / {label}
                   </button>
                 ))}

@@ -2771,6 +2771,368 @@ footer {
   }
 }
 
+/* Portfolio 2.4 — Visual polish & mobile ergonomics */
+.evidence-case {
+  --project-accent: var(--cyan);
+}
+.project-evidence > button,
+.project-gallery figure button {
+  border-color: color-mix(in srgb, var(--project-accent) 42%, #263544);
+  background: color-mix(in srgb, var(--project-accent) 12%, #071019);
+  padding: 10px;
+}
+.project-evidence img {
+  max-height: min(68vh, 720px);
+  object-fit: contain;
+  background: #05080d;
+}
+.project-gallery-track {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.project-gallery figcaption span {
+  color: var(--project-accent);
+}
+.nav nav button {
+  position: relative;
+}
+.nav nav button.active {
+  color: #f5f8fb;
+}
+.nav nav button.active::after {
+  content: "";
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  bottom: -10px;
+  height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 10px rgba(0, 217, 255, 0.55);
+}
+.mobile-current,
+.mobile-dock-menu {
+  display: none;
+}
+.skill-grid article > h3 > button {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+.skill-grid article > h3 > button svg {
+  display: none;
+}
+.skill-items[hidden] {
+  display: block;
+}
+.portrait-wrap {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 8%,
+    #000 88%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 8%,
+    #000 88%,
+    transparent 100%
+  );
+}
+.contact-form input,
+.contact-form textarea {
+  background: rgba(11, 24, 35, 0.82);
+  border-color: #26384a;
+}
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 2px rgba(0, 217, 255, 0.14);
+}
+.dock-suppressed {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 720px) {
+  main {
+    padding-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  main > section,
+  .evidence-case,
+  .labs,
+  .skills,
+  .education,
+  .experience {
+    scroll-margin-bottom: calc(88px + env(safe-area-inset-bottom));
+  }
+  .projects-cinema {
+    min-height: auto;
+    overflow: visible;
+    padding: 124px 0 54px;
+  }
+  .projects-intro {
+    position: static !important;
+    width: auto;
+    margin: 0 20px 28px;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  .projects-intro h2 {
+    margin: 16px 0;
+  }
+  .project-rail {
+    width: 100%;
+    height: auto;
+    padding: 0 20px 16px;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    transform: none !important;
+  }
+  .project-rail::-webkit-scrollbar {
+    display: none;
+  }
+  .project-card,
+  .rail-end {
+    flex: 0 0 84vw;
+    scroll-snap-align: center;
+  }
+  .project-card {
+    height: 610px;
+  }
+  .projects-intro::after {
+    content: "●  ○  ○  ○";
+    display: block;
+    margin-top: 18px;
+    color: var(--cyan);
+    font: 700 11px/1 var(--font-geist-mono);
+    letter-spacing: 0.35em;
+  }
+  .project-evidence img {
+    max-height: 55vh;
+  }
+  .project-evidence > button,
+  .project-gallery figure button {
+    padding: 6px;
+  }
+  .project-gallery-track {
+    gap: 12px;
+  }
+  .project-gallery figure,
+  .project-gallery figure.primary {
+    flex-basis: 78vw;
+  }
+  .gallery-heading b {
+    color: var(--project-accent);
+  }
+  .labs-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    border: 0;
+    gap: 12px;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+  }
+  .labs-grid::-webkit-scrollbar {
+    display: none;
+  }
+  .labs-grid article {
+    flex: 0 0 78vw;
+    min-height: 230px;
+    scroll-snap-align: center;
+    border: 1px solid var(--line);
+  }
+  .labs-grid h3 {
+    margin-top: 38px;
+  }
+  .skill-grid {
+    display: block;
+  }
+  .skill-grid article {
+    min-height: 0;
+    padding: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .skill-grid article > h3 > button {
+    min-height: 64px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+  .skill-grid article > h3 {
+    margin: 0;
+  }
+  .skill-grid article > h3 > button {
+    font-size: 18px;
+  }
+  .skill-grid article > h3 > button svg {
+    display: block;
+    width: 18px;
+    transition: transform 0.2s;
+  }
+  .skill-grid article.expanded > h3 > button svg {
+    transform: rotate(180deg);
+  }
+  .skill-items {
+    display: none;
+    padding: 0 0 18px;
+  }
+  .skill-items[hidden] {
+    display: none;
+  }
+  .skill-grid article.expanded .skill-items {
+    display: block;
+  }
+  .section-progress {
+    left: 12px;
+    right: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    width: auto;
+    min-height: 50px;
+    grid-template-columns: 1fr 34px;
+    padding: 9px 10px;
+    pointer-events: auto;
+  }
+  .section-progress > i {
+    grid-column: 1;
+  }
+  .section-progress > em {
+    display: none;
+  }
+  .mobile-dock-menu {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    position: relative;
+  }
+  .mobile-dock-menu summary {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    color: var(--cyan);
+    list-style: none;
+  }
+  .mobile-dock-menu summary::-webkit-details-marker {
+    display: none;
+  }
+  .mobile-dock-menu > div {
+    position: absolute;
+    right: 0;
+    bottom: 43px;
+    width: 210px;
+    padding: 7px;
+    display: grid;
+    gap: 4px;
+    border: 1px solid var(--line);
+    background: rgba(5, 9, 14, 0.96);
+    backdrop-filter: blur(14px);
+  }
+  .mobile-dock-menu button {
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    color: #d4dde7;
+    font: 700 11px var(--font-geist-mono);
+  }
+  .mobile-dock-menu svg {
+    width: 15px;
+  }
+  .utility-dock {
+    display: none;
+  }
+  .contact,
+  footer {
+    position: relative;
+    z-index: 30;
+  }
+  .mobile-current {
+    display: block;
+    margin: 0 0 14px;
+    color: var(--cyan);
+    font: 700 10px/1.4 var(--font-geist-mono);
+    letter-spacing: 0.12em;
+  }
+  .portrait-wrap {
+    opacity: 0.74;
+    transform: translateY(48px);
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 15%,
+      #000 78%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      #000 15%,
+      #000 78%,
+      transparent 100%
+    );
+  }
+  .case-summary,
+  .project-contribution > p,
+  .problem-solution p {
+    font-size: 16px;
+    line-height: 1.65;
+  }
+  .executive-summary span,
+  .evidence-label,
+  .project-contribution > span,
+  .project-status-grid section > span,
+  .gallery-heading,
+  .project-gallery figcaption,
+  .gallery-note {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 721px) and (max-width: 899px) {
+  .projects-cinema {
+    min-height: auto;
+    overflow: visible;
+    padding: 126px 0 64px;
+  }
+  .projects-intro {
+    position: static !important;
+    width: auto;
+    max-width: 680px;
+    margin: 0 5vw 36px;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+  .project-rail {
+    width: 100%;
+    height: auto;
+    padding: 0 5vw 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    transform: none !important;
+  }
+  .project-card,
+  .rail-end {
+    flex: 0 0 72vw;
+    scroll-snap-align: center;
+  }
+}
+
 /* WCAG AA contrast corrections for informational microcopy */
 .manifesto .section-index {
   color: #59645e;
@@ -2809,9 +3171,6 @@ footer > p:nth-child(2) {
 }
 
 /* Portfolio 2.3 — Evidence-first project experience */
-.legacy-projects {
-  display: none !important;
-}
 .projects-mask {
   position: absolute;
   z-index: 2;

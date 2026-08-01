@@ -12,13 +12,9 @@ import {
 import {
   ArrowDownRight,
   BriefcaseBusiness,
-  Check,
-  ChevronLeft,
-  ChevronRight,
   Code2,
   Database,
   Download,
-  ExternalLink,
   Mail,
   MonitorCog,
   Pause,
@@ -35,52 +31,14 @@ import { CustomCursor } from "./components/CustomCursor";
 import { Header, PortfolioMode } from "./components/Header";
 import { Magnetic } from "./components/Magnetic";
 import { Terminal } from "./components/Terminal";
+import { SkillsAccordion } from "./components/SkillsAccordion";
 import { ProjectCase } from "./components/projects/ProjectCase";
 import { ProjectRail } from "./components/projects/ProjectRail";
-import {
-  capabilities,
-  courses,
-  labs,
-  layers,
-  projectCards,
-  sintegraImages,
-  skills,
-} from "./data/portfolio";
+import { capabilities, courses, labs, skills } from "./data/portfolio";
 import { projects } from "./data/projects";
 import { Locale, LocaleProvider, Localized } from "./i18n";
 
 const SystemScene = dynamic(() => import("./SystemScene"), { ssr: false });
-
-type LegacyShot = {
-  src: string;
-  alt: string;
-  caption: string;
-  width: number;
-  height: number;
-};
-const legacyShots = (slug: string): LegacyShot[] =>
-  (projects.find((project) => project.slug === slug)?.screenshots ?? []).map(
-    (shot) => ({ ...shot, alt: shot.alt.pt, caption: shot.caption.pt }),
-  );
-const ominiSafetyScreenshots = legacyShots("ominisafety");
-const financeOsScreenshots = legacyShots("finance-os");
-const omniChatScreenshots = legacyShots("omnichat");
-function ProjectGallery({
-  screenshots,
-  note,
-}: {
-  screenshots: LegacyShot[];
-  note: string;
-}) {
-  return (
-    <div>
-      {screenshots.map((shot) => (
-        <span key={shot.src}>{shot.caption}</span>
-      ))}
-      <p>{note}</p>
-    </div>
-  );
-}
 
 export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   const reducedSystem = useReducedMotion();
@@ -92,14 +50,15 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   const [terminalOpen, setTerminalOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [gallery, setGallery] = useState(0);
-  const [activeLayer, setActiveLayer] = useState(0);
   const [retro, setRetro] = useState(false);
   const [activeProject, setActiveProject] = useState<string | null>(null);
+  const [activeSection, setActiveSection] = useState("about");
   const [pageProgress, setPageProgress] = useState(0);
   const projectPin = useRef<HTMLElement>(null);
   const projectRail = useRef<HTMLDivElement>(null);
   const projectIntro = useRef<HTMLDivElement>(null);
+  const projectProgressVisible =
+    activeSection === "projects" && Boolean(activeProject);
 
   useEffect(() => {
     if (!reducedSystem) return;
@@ -120,7 +79,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveProject((visible.target as HTMLElement).id);
+        if (visible) {
+          setActiveProject((visible.target as HTMLElement).id);
+          setActiveSection("projects");
+        }
       },
       { rootMargin: "-34% 0px -52%", threshold: [0, 0.2, 0.5] },
     );
@@ -128,10 +90,33 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
       const node = document.getElementById(project.slug);
       if (node) observer.observe(node);
     });
+    const navigationObserver = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection((visible.target as HTMLElement).id);
+      },
+      { rootMargin: "-28% 0px -60%", threshold: [0, 0.15, 0.4] },
+    );
+    [
+      "about",
+      "capabilities",
+      "projects",
+      "labs",
+      "experience",
+      "skills",
+      "education",
+      "contact",
+    ].forEach((id) => {
+      const node = document.getElementById(id);
+      if (node) navigationObserver.observe(node);
+    });
     window.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
     return () => {
       observer.disconnect();
+      navigationObserver.disconnect();
       window.removeEventListener("scroll", updateProgress);
     };
   }, []);
@@ -317,6 +302,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
           <CustomCursor />
           <Header
             locale={locale}
+            activeSection={activeSection}
             menuOpen={menuOpen}
             mode={mode}
             motionEnabled={motionEnabled}
@@ -336,7 +322,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             onSoundToggle={() => setSoundEnabled((value) => !value)}
           />
           <aside
-            className={`section-progress ${activeProject ? "visible" : ""}`}
+            className={`section-progress ${projectProgressVisible ? "visible" : ""}`}
             aria-live="polite"
           >
             <span className="desktop-progress">
@@ -355,6 +341,26 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
               <b style={{ width: `${pageProgress}%` }} />
             </i>
             <em>{pageProgress}%</em>
+            <details className="mobile-dock-menu">
+              <summary aria-label="Abrir controles da experiência">•••</summary>
+              <div>
+                <button
+                  onClick={() => setMotionEnabled(!motionEnabled)}
+                  aria-pressed={!motionEnabled}
+                >
+                  {motionEnabled ? <Pause /> : <Play />} Movimento
+                </button>
+                <button
+                  onClick={() => setSoundEnabled(!soundEnabled)}
+                  aria-pressed={soundEnabled}
+                >
+                  {soundEnabled ? <Volume2 /> : <VolumeX />} Som
+                </button>
+                <button onClick={() => setTerminalOpen(true)}>
+                  <Code2 /> Terminal
+                </button>
+              </div>
+            </details>
           </aside>
 
           <main
@@ -580,436 +586,6 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
               introRef={projectIntro}
               onNavigate={goTo}
             />
-            <div className="legacy-projects" aria-hidden="true">
-              <section className="projects-cinema" id="projects-legacy">
-                <div className="projects-intro">
-                  <p className="kicker">03 / SISTEMAS EM CAMPO</p>
-                  <h2>
-                    Projetos com
-                    <br />
-                    <em>problemas reais.</em>
-                  </h2>
-                  <p>
-                    <span className="desktop-copy">
-                      Role para atravessar uma sequência de produtos reais,
-                      arquiteturas em evolução e decisões técnicas.
-                    </span>
-                    <span className="mobile-copy">
-                      Deslize para explorar os projetos.
-                    </span>
-                  </p>
-                </div>
-                <div className="project-rail" ref={projectRail}>
-                  {projectCards.map((project, index) => (
-                    <article
-                      className={`project-card project-${index + 1}`}
-                      key={project.title}
-                      style={
-                        { "--accent": project.accent } as React.CSSProperties
-                      }
-                    >
-                      <div className="project-card-top">
-                        <span>{project.id}</span>
-                        <b>● {project.status}</b>
-                      </div>
-                      <div className="project-system">
-                        <div className="system-bar">
-                          <i />
-                          <i />
-                          <i />
-                          <span>{project.slug}.system</span>
-                        </div>
-                        <div className="system-content">
-                          <aside />
-                          <div>
-                            <span />
-                            <span />
-                            <div>
-                              <i />
-                              <i />
-                              <i />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="kicker">{project.type}</p>
-                      <h3>{project.title}</h3>
-                      <p>{project.summary}</p>
-                      <div className="tags">
-                        {project.tech.map((item) => (
-                          <span key={item}>{item}</span>
-                        ))}
-                      </div>
-                      <button onClick={() => goTo(`#${project.slug}`)}>
-                        ABRIR ESTUDO <ArrowDownRight size={15} />
-                      </button>
-                    </article>
-                  ))}
-                  <div className="rail-end">
-                    <span>04 / 04</span>
-                    <strong>
-                      Agora, entre
-                      <br />
-                      nos sistemas.
-                    </strong>
-                    <button onClick={() => goTo("#sintegrapro")}>
-                      CONTINUAR <ArrowDownRight />
-                    </button>
-                  </div>
-                </div>
-              </section>
-
-              <section
-                className="case-study sintegra-case"
-                id="sintegrapro-legacy"
-              >
-                <div className="case-head">
-                  <div>
-                    <p className="kicker">CASE 01 / PRODUTO REAL</p>
-                    <h2>
-                      SintegraPro<span>.</span>
-                    </h2>
-                  </div>
-                  <a
-                    href="https://github.com/KaikyRogis/SintegraPro-Showcase"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    SHOWCASE PÚBLICO <ExternalLink size={15} />
-                  </a>
-                </div>
-                <div className="case-metrics">
-                  <div>
-                    <span>AMBIENTE</span>
-                    <b>WINDOWS / REDE LOCAL</b>
-                  </div>
-                  <div>
-                    <span>ARQUITETURA</span>
-                    <b>SERVIDOR + ESTAÇÕES</b>
-                  </div>
-                  <div>
-                    <span>PERSISTÊNCIA</span>
-                    <b>POSTGRESQL</b>
-                  </div>
-                  <div>
-                    <span>STATUS</span>
-                    <b>EVOLUÇÃO CONTÍNUA</b>
-                  </div>
-                </div>
-                <div className="case-story">
-                  <article>
-                    <span>01 / PROBLEMA</span>
-                    <p>
-                      Processos fiscais complexos, sujeitos a erros e com
-                      necessidade de rastreabilidade, padronização e validação.
-                    </p>
-                  </article>
-                  <article>
-                    <span>02 / SOLUÇÃO</span>
-                    <p>
-                      Sistema desktop com fluxo guiado de processamento,
-                      correção, validação, histórico e administração do
-                      ambiente.
-                    </p>
-                  </article>
-                  <article>
-                    <span>03 / MINHA ATUAÇÃO</span>
-                    <p>
-                      Levantamento de regras, arquitetura, implementação,
-                      testes, interface, documentação e evolução do produto.
-                    </p>
-                  </article>
-                  <article>
-                    <span>04 / RESULTADO</span>
-                    <p>
-                      Um processo mais padronizado, rastreável e seguro,
-                      preparado para operação real em rede.
-                    </p>
-                  </article>
-                </div>
-                <div className="product-gallery">
-                  <div className="gallery-frame">
-                    <div className="gallery-browser">
-                      <span>● ● ●</span>
-                      <b>
-                        SINTEGRAPRO / {sintegraImages[gallery][1].toUpperCase()}
-                      </b>
-                    </div>
-                    <Image
-                      src={`/projects/sintegra/${sintegraImages[gallery][0]}`}
-                      alt={`Captura real do SintegraPro: ${sintegraImages[gallery][1]}`}
-                      width={1920}
-                      height={1032}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className="gallery-nav">
-                    <button
-                      onClick={() =>
-                        setGallery(
-                          (gallery - 1 + sintegraImages.length) %
-                            sintegraImages.length,
-                        )
-                      }
-                      aria-label="Imagem anterior"
-                    >
-                      <ChevronLeft />
-                    </button>
-                    <span>
-                      {String(gallery + 1).padStart(2, "0")} /{" "}
-                      {String(sintegraImages.length).padStart(2, "0")}
-                    </span>
-                    <button
-                      onClick={() =>
-                        setGallery((gallery + 1) % sintegraImages.length)
-                      }
-                      aria-label="Próxima imagem"
-                    >
-                      <ChevronRight />
-                    </button>
-                  </div>
-                  <p>
-                    Capturas reais do showcase público, com informações
-                    sensíveis previamente removidas.
-                  </p>
-                </div>
-                <div className="architecture">
-                  <div className="architecture-copy">
-                    <p className="kicker">ARQUITETURA DESMONTÁVEL</p>
-                    <h3>
-                      Veja o sistema
-                      <br />
-                      por camadas.
-                    </h3>
-                    <p>
-                      Selecione uma camada para isolar sua responsabilidade
-                      dentro da arquitetura servidor/estação.
-                    </p>
-                  </div>
-                  <div className="layer-stack">
-                    {layers.map(([title], index) => (
-                      <button
-                        key={title}
-                        className={activeLayer === index ? "active" : ""}
-                        aria-pressed={activeLayer === index}
-                        onClick={() => setActiveLayer(index)}
-                        style={{
-                          transform: `translateY(${index * 11}px) translateX(${index * 4}px)`,
-                        }}
-                      >
-                        <span>{String(index + 1).padStart(2, "0")}</span>
-                        <b>{title}</b>
-                      </button>
-                    ))}
-                  </div>
-                  <div className="layer-detail">
-                    <span>
-                      LAYER {String(activeLayer + 1).padStart(2, "0")}
-                    </span>
-                    <h4>{layers[activeLayer][0]}</h4>
-                    <p>{layers[activeLayer][1]}</p>
-                    <div className="layer-flow">
-                      <i /> <i /> <i />
-                    </div>
-                  </div>
-                </div>
-              </section>
-
-              <section
-                className="case-study omini-case"
-                id="ominisafety-legacy"
-              >
-                <div className="case-head">
-                  <div>
-                    <p className="kicker">CASE 02 / PRODUTO EM HOMOLOGAÇÃO</p>
-                    <h2>
-                      OminiSafety<span>.</span>
-                    </h2>
-                  </div>
-                  <b className="status-badge">● HOMOLOGAÇÃO INTERNA</b>
-                </div>
-                <div className="omini-transform">
-                  <div className="chaos">
-                    <span>Planilhas</span>
-                    <span>Certificados</span>
-                    <span>Vencimentos</span>
-                    <span>Treinamentos</span>
-                    <span>Auditorias</span>
-                  </div>
-                  <div className="transform-arrow">
-                    <ArrowDownRight />
-                  </div>
-                  <div className="omini-dashboard">
-                    <div className="dashboard-nav">
-                      <b>
-                        OMINI<span>SAFETY</span>
-                      </b>
-                      <i />
-                      <i />
-                      <i />
-                    </div>
-                    <div className="dashboard-grid">
-                      <article>
-                        <span>CONFORMIDADE</span>
-                        <strong>DEMO</strong>
-                      </article>
-                      <article>
-                        <span>TREINAMENTOS</span>
-                        <strong>128</strong>
-                      </article>
-                      <article>
-                        <span>CERTIFICADOS</span>
-                        <strong>VALIDÁVEIS</strong>
-                      </article>
-                      <article className="wide">
-                        <span>VISÃO MULTIEMPRESA</span>
-                        <div className="bars">
-                          <i />
-                          <i />
-                          <i />
-                          <i />
-                          <i />
-                        </div>
-                      </article>
-                    </div>
-                  </div>
-                </div>
-                <div className="feature-grid">
-                  {[
-                    "Gestão multiempresa",
-                    "Perfis de acesso",
-                    "Cursos teóricos",
-                    "Treinamentos práticos",
-                    "Matrículas",
-                    "Certificados",
-                    "Vencimentos",
-                    "Agendamentos",
-                    "Auditoria",
-                    "Dashboards",
-                    "Assistente inteligente",
-                    "Experiência mobile",
-                  ].map((feature) => (
-                    <span key={feature}>
-                      <Check size={13} />
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-                <div className="case-note">
-                  <strong>O que este projeto demonstra</strong>
-                  <p>
-                    Visão de produto, arquitetura de sistemas, experiência do
-                    usuário, modelagem de processos e capacidade de construir
-                    uma solução empresarial além do código.
-                  </p>
-                </div>
-                <ProjectGallery
-                  screenshots={ominiSafetyScreenshots}
-                  note="Capturas reais do produto em homologação local, com API, PostgreSQL e dados demonstrativos."
-                />
-              </section>
-
-              <section className="dual-cases">
-                <article id="finance-os-legacy">
-                  <p className="kicker">CASE 03 / EM DESENVOLVIMENTO</p>
-                  <h2>Finance OS</h2>
-                  <p>
-                    Ecossistema pessoal para organizar despesas, objetivos,
-                    relatórios, wishlist e decisões financeiras.
-                  </p>
-                  <div className="finance-ui">
-                    <div>
-                      <span>SALDO PROJETADO</span>
-                      <b>R$ •••••</b>
-                    </div>
-                    <div className="chart">
-                      <i />
-                      <i />
-                      <i />
-                      <i />
-                      <i />
-                      <i />
-                    </div>
-                    <div className="finance-list">
-                      <span>
-                        Objetivos <b>DEMO</b>
-                      </span>
-                      <span>
-                        Relatórios <b>12</b>
-                      </span>
-                      <span>
-                        Wishlist <b>08</b>
-                      </span>
-                    </div>
-                  </div>
-                  <div className="tags">
-                    <span>MONOREPO</span>
-                    <span>WEB</span>
-                    <span>API</span>
-                    <span>MOBILE</span>
-                    <span>IA</span>
-                  </div>
-                  <small>
-                    Sistema de uso pessoal, não apresentado como produto
-                    comercial. Recursos planejados não aparecem como concluídos.
-                  </small>
-                  <ProjectGallery
-                    screenshots={financeOsScreenshots}
-                    note="Capturas reais do sistema pessoal executado com frontend, API e PostgreSQL locais. Valores e registros são demonstrativos."
-                  />
-                </article>
-                <article id="omnichat-legacy">
-                  <p className="kicker">CASE 04 / PROJETO COLABORATIVO</p>
-                  <h2>OmniChat</h2>
-                  <p>
-                    Plataforma multidepartamental de atendimento. Kaiky Rogis
-                    desenvolve o backend; Hauan Felipe é responsável pelo
-                    frontend apresentado neste case.
-                  </p>
-                  <div className="chat-ui">
-                    <aside>
-                      <i />
-                      <i />
-                      <i />
-                      <i />
-                    </aside>
-                    <div>
-                      <span className="bubble left">
-                        Olá! Como posso ajudar?
-                      </span>
-                      <span className="bubble right">
-                        Preciso falar com o financeiro.
-                      </span>
-                      <span className="bubble left">
-                        Transferindo para a fila correta…
-                      </span>
-                    </div>
-                  </div>
-                  <div className="tags">
-                    <span>QR CODE</span>
-                    <span>FILAS</span>
-                    <span>DEPARTAMENTOS</span>
-                    <span>CHATBOT</span>
-                    <span>META API</span>
-                    <span>VOIP</span>
-                  </div>
-                  <a
-                    className="project-source"
-                    href="https://github.com/HauanFelipe/Chat/tree/frontend-hauan"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    CONHEÇA A IMPLEMENTAÇÃO DO FRONTEND — HAUAN FELIPE{" "}
-                    <ExternalLink size={14} />
-                  </a>
-                  <ProjectGallery
-                    screenshots={omniChatScreenshots}
-                    note="Capturas reais do frontend colaborativo em desenvolvimento, usando conteúdo demonstrativo e sem métricas de adoção."
-                  />
-                </article>
-              </section>
-            </div>
-
             <div className="evidence-cases">
               {projects.map((project) => (
                 <ProjectCase
@@ -1138,16 +714,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   nível de contato real.
                 </p>
               </div>
-              <div className="skill-grid">
-                {Object.entries(skills).map(([group, items]) => (
-                  <article key={group}>
-                    <h3>{group}</h3>
-                    {items.map((item) => (
-                      <p key={item}>{item}</p>
-                    ))}
-                  </article>
-                ))}
-              </div>
+              <SkillsAccordion groups={skills} />
             </section>
 
             <section className="education" id="education">
@@ -1229,13 +796,15 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                 <span>KR</span>
                 <b>KAIKY.ROGIS</b>
               </div>
-              <p>KAIKY.OS · PORTFOLIO VERSION 2.3</p>
+              <p>KAIKY.OS · PORTFOLIO VERSION 2.4</p>
               <p>
                 <i /> ALL SYSTEMS OPERATIONAL
               </p>
             </footer>
 
-            <div className="utility-dock">
+            <div
+              className={`utility-dock ${activeSection === "contact" ? "dock-suppressed" : ""}`}
+            >
               <button
                 onClick={() => setMotionEnabled(!motionEnabled)}
                 aria-label={

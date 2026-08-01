@@ -2,6 +2,7 @@
 
 import { ArrowDownRight } from "lucide-react";
 import { useState } from "react";
+import type { CSSProperties } from "react";
 import type { PortfolioProject } from "../../data/projects";
 import type { Locale } from "../../i18n";
 import { getMessages } from "../../messages";
@@ -26,6 +27,7 @@ export function ProjectCase({
       className={`case-study evidence-case evidence-${project.slug}`}
       id={project.slug}
       data-project-index={project.id}
+      style={{ "--project-accent": project.accent } as CSSProperties}
     >
       <ProjectCaseHeader project={project} locale={locale} />
       <ProjectEvidence
@@ -50,6 +52,7 @@ export function ProjectCase({
         implemented={project.implemented}
         developing={project.developing}
         roadmap={project.roadmap}
+        developingLabel={project.statusLabels?.developing?.[locale]}
       />
       <ProjectGallery
         shots={project.screenshots}
