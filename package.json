@@ -21,7 +21,7 @@
     "monitor": "node scripts/monitor-site.mjs",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots",
-    "capture:qa": "node scripts/capture-qa.mjs",
+    "capture:qa": "npm run build && node scripts/capture-qa.mjs",
     "check:images": "node scripts/check-image-budget.mjs",
     "quality": "npm run format:check && npm run typecheck && npm run lint && npm run check:images && npm run build && npm run check:links"
   },

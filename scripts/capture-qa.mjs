@@ -1,12 +1,15 @@
 import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
+import { once } from "node:events";
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
+import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 import sharp from "sharp";
 
-const baseURL = process.env.CAPTURE_BASE_URL ?? "http://127.0.0.1:4173";
+const externalBaseURL = process.env.CAPTURE_BASE_URL;
+const baseURL = externalBaseURL ?? "http://127.0.0.1:4173";
 const outputRoot = path.resolve("tmp/capture-qa");
 const viewports = {
   desktop: { width: 1440, height: 900 },
@@ -43,6 +46,27 @@ async function waitForServer() {
     await new Promise((resolve) => setTimeout(resolve, 250));
   }
   throw new Error(`Servidor de captura indisponível em ${baseURL}`);
+}
+
+async function stopServer(server) {
+  if (!server || server.exitCode !== null) return;
+
+  server.kill();
+  await Promise.race([
+    once(server, "exit"),
+    new Promise((resolve) => setTimeout(resolve, 5_000)),
+  ]);
+
+  if (server.exitCode === null) {
+    server.kill("SIGKILL");
+    await Promise.race([
+      once(server, "exit"),
+      new Promise((resolve) => setTimeout(resolve, 2_000)),
+    ]);
+  }
+
+  if (await isReachable())
+    throw new Error("O servidor de captura não liberou a porta 4173.");
 }
 
 async function perceptualHash(file) {
@@ -195,16 +219,32 @@ async function captureMobileEvidence(browser) {
 await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
 let server;
-if (!(await isReachable())) {
-  server = spawn("npx", ["serve", "out", "-l", "4173", "--no-clipboard"], {
-    shell: true,
-    stdio: "ignore",
-  });
-  await waitForServer();
-}
-
-const browser = await chromium.launch({ headless: true });
+let browser;
 try {
+  if (externalBaseURL) {
+    await waitForServer();
+  } else {
+    if (await isReachable())
+      throw new Error(
+        "A porta 4173 já está ocupada. Encerre o processo existente ou informe CAPTURE_BASE_URL explicitamente.",
+      );
+    const servePackage = fileURLToPath(
+      import.meta.resolve("serve/package.json"),
+    );
+    const serveEntry = path.join(
+      path.dirname(servePackage),
+      "build",
+      "main.js",
+    );
+    server = spawn(
+      process.execPath,
+      [serveEntry, "out", "-l", "4173", "--no-clipboard"],
+      { stdio: "ignore", windowsHide: true },
+    );
+    await waitForServer();
+  }
+
+  browser = await chromium.launch({ headless: true });
   const desktop = await captureSections(browser, "desktop", viewports.desktop);
   const mobile = await captureSections(browser, "mobile", viewports.mobile);
   const evidence = await captureMobileEvidence(browser);
@@ -227,6 +267,6 @@ try {
     `Capture QA aprovado: ${desktop.length} desktop, ${mobile.length} mobile, vídeo e trace em ${outputRoot}`,
   );
 } finally {
-  await browser.close();
-  server?.kill();
+  await browser?.close();
+  await stopServer(server);
 }
