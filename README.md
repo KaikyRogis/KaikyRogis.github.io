@@ -12,9 +12,10 @@ Portfólio profissional de Kaiky Rogis, desenvolvido para apresentar experiênci
 
 - apresentação cinematográfica com versão de movimento reduzido;
 - terminal interativo e central de navegação com `Ctrl + K`;
-- estudos de caso de SintegraPro, OminiSafety, Finance OS e OmniChat;
+- estudos de caso de SintegraPro, OminiSafety, Finance OS e OmniChat, com
+  capturas reais das interfaces e status apresentados de forma transparente;
 - trajetória profissional, formação e mapa de competências;
-- currículo para download;
+- currículo atualizado para download com o nome original do arquivo;
 - layout responsivo e navegação por teclado;
 - publicação automática no GitHub Pages.
 - versão integral em inglês na rota `/en/`, com metadados próprios;

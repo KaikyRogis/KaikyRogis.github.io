@@ -44,9 +44,125 @@ import {
   sintegraImages,
   skills,
 } from "./data/portfolio";
-import { Locale, LocaleProvider, Localized } from "./i18n";
+import {
+  Locale,
+  LocaleProvider,
+  Localized,
+  translateText,
+  useLocale,
+} from "./i18n";
 
 const SystemScene = dynamic(() => import("./SystemScene"), { ssr: false });
+
+type ProjectScreenshot = {
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+};
+
+function ProjectGallery({
+  screenshots,
+  note,
+}: {
+  screenshots: ProjectScreenshot[];
+  note: string;
+}) {
+  const locale = useLocale();
+
+  return (
+    <div className="case-real-gallery">
+      <div className="case-real-gallery-grid">
+        {screenshots.map((screenshot) => (
+          <figure key={screenshot.src}>
+            <Image
+              src={screenshot.src}
+              alt={translateText(screenshot.alt, locale)}
+              width={screenshot.width}
+              height={screenshot.height}
+              loading="lazy"
+            />
+            <figcaption>{translateText(screenshot.caption, locale)}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <p className="case-real-gallery-note">{translateText(note, locale)}</p>
+    </div>
+  );
+}
+
+const ominiSafetyScreenshots: ProjectScreenshot[] = [
+  {
+    src: "/projects/ominisafety/dashboard-plataforma.png",
+    alt: "Dashboard administrativo real da OminiSafety",
+    caption: "Dashboard multiempresa e alertas operacionais",
+    width: 1875,
+    height: 834,
+  },
+  {
+    src: "/projects/ominisafety/gestao-empresas.png",
+    alt: "Gestão real de empresas na OminiSafety",
+    caption: "Gestão de tenants, contratos e status",
+    width: 1890,
+    height: 856,
+  },
+  {
+    src: "/projects/ominisafety/catalogo-ehs.png",
+    alt: "Catálogo EHS real da OminiSafety",
+    caption: "Catálogo legal de treinamentos EHS",
+    width: 1875,
+    height: 834,
+  },
+];
+
+const financeOsScreenshots: ProjectScreenshot[] = [
+  {
+    src: "/projects/finance-os/dashboard-financeiro.png",
+    alt: "Dashboard real do Finance OS conectado à API",
+    caption: "Dashboard, saldo e projeção financeira",
+    width: 1265,
+    height: 712,
+  },
+  {
+    src: "/projects/finance-os/planejamento-wishlist.png",
+    alt: "Wishlist e planejamento reais do Finance OS",
+    caption: "Wishlist com prioridade e progresso financeiro",
+    width: 1265,
+    height: 712,
+  },
+  {
+    src: "/projects/finance-os/faturas-cartoes.png",
+    alt: "Gestão real de cartões e faturas do Finance OS",
+    caption: "Cartões, faturas, pagamentos e limites",
+    width: 1265,
+    height: 712,
+  },
+];
+
+const omniChatScreenshots: ProjectScreenshot[] = [
+  {
+    src: "/projects/omnichat/login.png",
+    alt: "Tela real de login do OmniChat",
+    caption: "Acesso corporativo ao painel",
+    width: 1265,
+    height: 712,
+  },
+  {
+    src: "/projects/omnichat/central-atendimento.png",
+    alt: "Central real de atendimento do OmniChat",
+    caption: "Filas, conversas e comentários internos",
+    width: 1280,
+    height: 720,
+  },
+  {
+    src: "/projects/omnichat/agenda.png",
+    alt: "Agenda real de compromissos do OmniChat",
+    caption: "Agenda de compromissos e retornos",
+    width: 1280,
+    height: 720,
+  },
+];
 
 export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   const reducedSystem = useReducedMotion();
@@ -691,12 +807,12 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             <section className="case-study omini-case" id="ominisafety">
               <div className="case-head">
                 <div>
-                  <p className="kicker">CASE 02 / PRODUTO EM DESENVOLVIMENTO</p>
+                  <p className="kicker">CASE 02 / PRODUTO EM HOMOLOGAÇÃO</p>
                   <h2>
                     OminiSafety<span>.</span>
                   </h2>
                 </div>
-                <b className="status-badge">● EM DESENVOLVIMENTO</b>
+                <b className="status-badge">● AJUSTES FINAIS</b>
               </div>
               <div className="omini-transform">
                 <div className="chaos">
@@ -773,19 +889,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   solução empresarial além do código.
                 </p>
               </div>
-              <figure className="case-real-gallery">
-                <Image
-                  src="/projects/ominisafety/admin-interface.png"
-                  alt="Telas reais da interface administrativa do OminiSafety"
-                  width={1536}
-                  height={1024}
-                  loading="lazy"
-                />
-                <figcaption>
-                  Interface real do frontend em desenvolvimento, apresentada com
-                  dados demonstrativos.
-                </figcaption>
-              </figure>
+              <ProjectGallery
+                screenshots={ominiSafetyScreenshots}
+                note="Capturas reais do produto em homologação local, com API, PostgreSQL e dados demonstrativos."
+              />
             </section>
 
             <section className="dual-cases">
@@ -829,8 +936,13 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   <span>IA</span>
                 </div>
                 <small>
-                  Recursos planejados não são apresentados como concluídos.
+                  Sistema de uso pessoal, não apresentado como produto
+                  comercial. Recursos planejados não aparecem como concluídos.
                 </small>
+                <ProjectGallery
+                  screenshots={financeOsScreenshots}
+                  note="Capturas reais do sistema pessoal executado com frontend, API e PostgreSQL locais. Valores e registros são demonstrativos."
+                />
               </article>
               <article id="omnichat">
                 <p className="kicker">CASE 04 / PROJETO COLABORATIVO</p>
@@ -873,6 +985,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                 >
                   FRONTEND POR HAUAN FELIPE <ExternalLink size={14} />
                 </a>
+                <ProjectGallery
+                  screenshots={omniChatScreenshots}
+                  note="Capturas reais do frontend colaborativo em desenvolvimento, usando conteúdo demonstrativo e sem métricas de adoção."
+                />
               </article>
             </section>
 

@@ -135,11 +135,16 @@ const english: Record<string, string> = {
   "Proteção e restauração coordenada do ambiente.":
     "Coordinated environment protection and recovery.",
   "PRODUTO EM DESENVOLVIMENTO": "PRODUCT IN DEVELOPMENT",
+  "PRODUTO EM HOMOLOGAÇÃO": "PRODUCT IN VALIDATION",
   "PROJETO EM DESENVOLVIMENTO": "PROJECT IN DEVELOPMENT",
   "SaaS B2B de segurança do trabalho": "B2B workplace safety SaaS",
   "Treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis em uma plataforma multiempresa.":
     "Training, compliance, anti-fraud assessments, verifiable certificates and auditable evidence in a multi-company platform.",
+  "Produto multiempresa em homologação, com treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis.":
+    "Multi-company product under validation, with training, compliance, anti-fraud assessments, verifiable certificates and auditable evidence.",
   "EM DESENVOLVIMENTO": "IN DEVELOPMENT",
+  "AJUSTES FINAIS": "FINAL REFINEMENTS",
+  "AJUSTES FINAIS / HOMOLOGAÇÃO": "FINAL REFINEMENTS / VALIDATION",
   Planilhas: "Spreadsheets",
   Certificados: "Certificates",
   Vencimentos: "Expirations",
@@ -163,6 +168,18 @@ const english: Record<string, string> = {
     "Real screens from the OminiSafety administrative interface",
   "Interface real do frontend em desenvolvimento, apresentada com dados demonstrativos.":
     "Real interface from the frontend under development, shown with demonstration data.",
+  "Dashboard administrativo real da OminiSafety":
+    "Real OminiSafety administrative dashboard",
+  "Dashboard multiempresa e alertas operacionais":
+    "Multi-company dashboard and operational alerts",
+  "Gestão real de empresas na OminiSafety":
+    "Real company management in OminiSafety",
+  "Gestão de tenants, contratos e status":
+    "Tenant, contract and status management",
+  "Catálogo EHS real da OminiSafety": "Real OminiSafety EHS catalog",
+  "Catálogo legal de treinamentos EHS": "Regulatory EHS training catalog",
+  "Capturas reais do produto em homologação local, com API, PostgreSQL e dados demonstrativos.":
+    "Real screenshots from the product running locally with its API, PostgreSQL and demonstration data.",
   "Visão de produto, arquitetura de sistemas, experiência do usuário, modelagem de processos e capacidade de construir uma solução empresarial além do código.":
     "Product vision, systems architecture, user experience, process modeling and the ability to build a business solution beyond the code.",
   "ARQUITETURA EM EVOLUÇÃO": "EVOLVING ARCHITECTURE",
@@ -177,13 +194,40 @@ const english: Record<string, string> = {
   "Plataforma multidepartamental de atendimento. Kaiky Rogis desenvolve o backend; Hauan Felipe é responsável pelo frontend apresentado neste case.":
     "Multi-department customer-service platform. Kaiky Rogis develops the backend; Hauan Felipe is responsible for the frontend presented in this case.",
   "FRONTEND POR HAUAN FELIPE": "FRONTEND BY HAUAN FELIPE",
+  "Tela real de login do OmniChat": "Real OmniChat login screen",
+  "Acesso corporativo ao painel": "Corporate dashboard access",
+  "Central real de atendimento do OmniChat":
+    "Real OmniChat customer-service hub",
+  "Filas, conversas e comentários internos":
+    "Queues, conversations and internal comments",
+  "Agenda real de compromissos do OmniChat":
+    "Real OmniChat appointment calendar",
+  "Agenda de compromissos e retornos": "Appointment and follow-up calendar",
+  "Capturas reais do frontend colaborativo em desenvolvimento, usando conteúdo demonstrativo e sem métricas de adoção.":
+    "Real screenshots from the collaborative frontend under development, using demonstration content and no adoption metrics.",
   "Ecossistema pessoal para organizar despesas, objetivos, relatórios, wishlist e decisões financeiras.":
     "Personal ecosystem for organizing expenses, goals, reports, wishlists and financial decisions.",
+  "Dashboard real do Finance OS conectado à API":
+    "Real Finance OS dashboard connected to the API",
+  "Dashboard, saldo e projeção financeira":
+    "Dashboard, balance and financial forecast",
+  "Wishlist e planejamento reais do Finance OS":
+    "Real Finance OS wishlist and planning",
+  "Wishlist com prioridade e progresso financeiro":
+    "Wishlist with priority and financial progress",
+  "Gestão real de cartões e faturas do Finance OS":
+    "Real Finance OS card and statement management",
+  "Cartões, faturas, pagamentos e limites":
+    "Cards, statements, payments and limits",
+  "Capturas reais do sistema pessoal executado com frontend, API e PostgreSQL locais. Valores e registros são demonstrativos.":
+    "Real screenshots from the personal system running with its local frontend, API and PostgreSQL. Values and records are for demonstration.",
   "SALDO PROJETADO": "PROJECTED BALANCE",
   Objetivos: "Goals",
   Relatórios: "Reports",
   "Recursos planejados não são apresentados como concluídos.":
     "Planned features are not presented as completed.",
+  "Sistema de uso pessoal, não apresentado como produto comercial. Recursos planejados não aparecem como concluídos.":
+    "Personal-use system, not presented as a commercial product. Planned features are not shown as completed.",
   "Plataforma multiempresa para centralização de atendimentos, automação e evolução futura para telefonia e inteligência artificial.":
     "Multi-company platform for centralized customer service, automation and future evolution toward telephony and artificial intelligence.",
   "Olá! Como posso ajudar?": "Hello! How can I help?",

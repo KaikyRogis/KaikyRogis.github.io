@@ -48,10 +48,10 @@ export const projectCards = [
     slug: "ominisafety",
     title: "OminiSafety",
     type: "SaaS B2B de segurança do trabalho",
-    status: "EM DESENVOLVIMENTO",
+    status: "AJUSTES FINAIS / HOMOLOGAÇÃO",
     accent: "#30e88a",
     summary:
-      "Treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis em uma plataforma multiempresa.",
+      "Produto multiempresa em homologação, com treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis.",
     tech: ["Next.js", "React", "NestJS", "Prisma", "Redis", "S3"],
   },
   {
