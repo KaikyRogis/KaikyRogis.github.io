@@ -14,17 +14,30 @@ export function SkillsAccordion({
     <div className="skill-grid">
       {Object.entries(groups).map(([group, items]) => {
         const expanded = open === group;
+        const slug = group
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/(^-|-$)/g, "");
         return (
           <article key={group} className={expanded ? "expanded" : ""}>
-            <button
-              type="button"
-              aria-expanded={expanded}
-              onClick={() => setOpen(expanded ? "" : group)}
+            <h3>
+              <button
+                type="button"
+                aria-expanded={expanded}
+                aria-controls={`skills-${slug}`}
+                onClick={() => setOpen(expanded ? "" : group)}
+              >
+                <span>{group}</span>
+                <ChevronDown aria-hidden="true" />
+              </button>
+            </h3>
+            <div
+              id={`skills-${slug}`}
+              className="skill-items"
+              hidden={!expanded}
             >
-              <h3>{group}</h3>
-              <ChevronDown aria-hidden="true" />
-            </button>
-            <div className="skill-items">
               {items.map((item) => (
                 <p key={item}>{item}</p>
               ))}

@@ -15,6 +15,11 @@ const navigation = [
   ["#contact", "Contato"],
 ];
 
+const supplementarySectionLabels = {
+  labs: { pt: "Kaiky Labs", en: "Kaiky Labs" },
+  skills: { pt: "Competências", en: "Skills" },
+};
+
 type HeaderProps = {
   activeSection: string;
   locale: Locale;
@@ -45,6 +50,12 @@ export function Header(props: HeaderProps) {
     onPaletteOpen,
     onSoundToggle,
   } = props;
+  const currentSectionLabel =
+    navigation.find(([id]) => id.slice(1) === activeSection)?.[1] ??
+    supplementarySectionLabels[
+      activeSection as keyof typeof supplementarySectionLabels
+    ]?.[locale] ??
+    activeSection;
 
   return (
     <Localized>
@@ -116,10 +127,16 @@ export function Header(props: HeaderProps) {
               <nav aria-label="Navegação móvel">
                 <p className="mobile-current">
                   {locale === "pt" ? "SEÇÃO ATUAL" : "CURRENT SECTION"} ·{" "}
-                  {activeSection.toUpperCase()}
+                  {currentSectionLabel}
                 </p>
                 {navigation.map(([id, label], index) => (
-                  <button key={id} onClick={() => onNavigate(id)}>
+                  <button
+                    key={id}
+                    aria-current={
+                      activeSection === id.slice(1) ? "location" : undefined
+                    }
+                    onClick={() => onNavigate(id)}
+                  >
                     {String(index + 1).padStart(2, "0")} / {label}
                   </button>
                 ))}

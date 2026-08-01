@@ -127,13 +127,56 @@ test("mobile dock avoids contact and footer", async ({ page }) => {
   await expect(page.locator(".utility-dock")).toHaveClass(/dock-suppressed/);
 });
 
+test("project progress disappears after project cases", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  await page.locator("#omnichat").scrollIntoViewIfNeeded();
+  await expect(page.locator(".section-progress")).toHaveClass(/visible/);
+  await page.locator("#labs").scrollIntoViewIfNeeded();
+  await expect(page.locator(".section-progress")).not.toHaveClass(/visible/);
+  await page.locator("#experience").scrollIntoViewIfNeeded();
+  await expect(page.locator(".section-progress")).not.toHaveClass(/visible/);
+});
+
+test("mobile current section label is localized", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+
+  await page.goto("/");
+  await page.locator("#projects").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Abrir menu" }).click();
+  await expect(page.locator(".mobile-current")).toContainText(
+    "SEÇÃO ATUAL · Projetos",
+  );
+  await expect(
+    page.getByRole("button", { name: "03 / Projetos" }),
+  ).toHaveAttribute("aria-current", "location");
+
+  await page.goto("/en/");
+  await page.locator("#projects").scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await expect(page.locator(".mobile-current")).toContainText(
+    "CURRENT SECTION · Projects",
+  );
+  await expect(
+    page.getByRole("button", { name: "03 / Projects" }),
+  ).toHaveAttribute("aria-current", "location");
+});
+
 test("mobile skills accordion and labs rail are compact", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() =>
     sessionStorage.setItem("kaiky-os-visited", "1"),
   );
   await page.goto("/");
-  const skillButtons = page.locator("#skills .skill-grid article > button");
+  const skillButtons = page.locator(
+    "#skills .skill-grid article > h3 > button",
+  );
   await expect(skillButtons.first()).toHaveAttribute("aria-expanded", "true");
   await skillButtons.nth(1).click();
   await expect(skillButtons.nth(1)).toHaveAttribute("aria-expanded", "true");

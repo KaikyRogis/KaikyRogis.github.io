@@ -2812,7 +2812,7 @@ footer {
 .mobile-dock-menu {
   display: none;
 }
-.skill-grid article > button {
+.skill-grid article > h3 > button {
   width: 100%;
   padding: 0;
   display: flex;
@@ -2823,8 +2823,11 @@ footer {
   color: inherit;
   text-align: left;
 }
-.skill-grid article > button svg {
+.skill-grid article > h3 > button svg {
   display: none;
+}
+.skill-items[hidden] {
+  display: block;
 }
 .portrait-wrap {
   -webkit-mask-image: linear-gradient(
@@ -2961,26 +2964,31 @@ footer {
     padding: 0;
     border-bottom: 1px solid var(--line);
   }
-  .skill-grid article > button {
+  .skill-grid article > h3 > button {
     min-height: 64px;
     padding: 14px 0;
     cursor: pointer;
   }
-  .skill-grid article > button h3 {
+  .skill-grid article > h3 {
     margin: 0;
+  }
+  .skill-grid article > h3 > button {
     font-size: 18px;
   }
-  .skill-grid article > button svg {
+  .skill-grid article > h3 > button svg {
     display: block;
     width: 18px;
     transition: transform 0.2s;
   }
-  .skill-grid article.expanded > button svg {
+  .skill-grid article.expanded > h3 > button svg {
     transform: rotate(180deg);
   }
   .skill-items {
     display: none;
     padding: 0 0 18px;
+  }
+  .skill-items[hidden] {
+    display: none;
   }
   .skill-grid article.expanded .skill-items {
     display: block;
@@ -3163,9 +3171,6 @@ footer > p:nth-child(2) {
 }
 
 /* Portfolio 2.3 — Evidence-first project experience */
-.legacy-projects {
-  display: none !important;
-}
 .projects-mask {
   position: absolute;
   z-index: 2;
