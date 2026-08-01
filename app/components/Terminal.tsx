@@ -4,6 +4,7 @@ import { FormEvent, useCallback, useRef, useState } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight, X } from "lucide-react";
 import { useDialogFocus } from "../hooks/useDialogFocus";
+import { Localized } from "../i18n";
 
 const help = [
   "help",
@@ -58,7 +59,7 @@ export function Terminal({
         experience:
           "Stage Sistemas · Analista de Suporte e Sistemas · setembro/2024 — presente.",
         projects:
-          "SintegraPro · OminiSafety · Finance OS · WhatsApp Hub · Kaiky Labs.",
+          "SintegraPro · OminiSafety · Finance OS · OmniChat · Kaiky Labs.",
         skills:
           "TypeScript · Next.js · NestJS · PostgreSQL · automação · suporte técnico avançado.",
         education:
@@ -99,50 +100,58 @@ export function Terminal({
   }
 
   return (
-    <motion.div
-      className="modal"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      onMouseDown={(event) => event.target === event.currentTarget && onClose()}
-    >
+    <Localized>
       <motion.div
-        ref={dialogRef}
-        className="terminal"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="terminal-title"
-        initial={{ scale: 0.96, y: 20 }}
-        animate={{ scale: 1, y: 0 }}
-        exit={{ scale: 0.96, y: 20 }}
+        className="modal"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onMouseDown={(event) =>
+          event.target === event.currentTarget && onClose()
+        }
       >
-        <div className="terminal-bar">
-          <span>● ● ●</span>
-          <b id="terminal-title">KAIKY.OS / TERMINAL</b>
-          <button onClick={onClose} aria-label="Fechar terminal">
-            <X />
-          </button>
-        </div>
-        <div className="terminal-output" aria-live="polite" aria-atomic="false">
-          {history.map((line, index) => (
-            <pre key={`${line}-${index}`}>{line}</pre>
-          ))}
-        </div>
-        <form onSubmit={run}>
-          <label htmlFor="command">visitor@kaiky.os:~$</label>
-          <input
-            id="command"
-            data-autofocus
-            value={command}
-            onChange={(event) => setCommand(event.target.value)}
-            autoComplete="off"
-            aria-label="Comando do terminal"
-          />
-          <button type="submit" aria-label="Executar comando">
-            <ArrowUpRight />
-          </button>
-        </form>
+        <motion.div
+          ref={dialogRef}
+          className="terminal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="terminal-title"
+          initial={{ scale: 0.96, y: 20 }}
+          animate={{ scale: 1, y: 0 }}
+          exit={{ scale: 0.96, y: 20 }}
+        >
+          <div className="terminal-bar">
+            <span>● ● ●</span>
+            <b id="terminal-title">KAIKY.OS / TERMINAL</b>
+            <button onClick={onClose} aria-label="Fechar terminal">
+              <X />
+            </button>
+          </div>
+          <div
+            className="terminal-output"
+            aria-live="polite"
+            aria-atomic="false"
+          >
+            {history.map((line, index) => (
+              <pre key={`${line}-${index}`}>{line}</pre>
+            ))}
+          </div>
+          <form onSubmit={run}>
+            <label htmlFor="command">visitor@kaiky.os:~$</label>
+            <input
+              id="command"
+              data-autofocus
+              value={command}
+              onChange={(event) => setCommand(event.target.value)}
+              autoComplete="off"
+              aria-label="Comando do terminal"
+            />
+            <button type="submit" aria-label="Executar comando">
+              <ArrowUpRight />
+            </button>
+          </form>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </Localized>
   );
 }

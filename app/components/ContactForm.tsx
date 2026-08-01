@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { Check, Copy, Send } from "lucide-react";
+import { Localized } from "../i18n";
 
 export function ContactForm() {
   const [copied, setCopied] = useState(false);
@@ -32,62 +33,64 @@ export function ContactForm() {
   }
 
   return (
-    <div className="contact-form-wrap">
-      <form className="contact-form" onSubmit={submit}>
-        <label>
-          Nome
-          <input
-            name="name"
-            autoComplete="name"
-            required
-            placeholder="Como posso te chamar?"
-          />
-        </label>
-        <label>
-          E-mail
-          <input
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-            placeholder="voce@empresa.com"
-          />
-        </label>
-        <label>
-          Assunto
-          <input
-            name="subject"
-            required
-            placeholder="Projeto, oportunidade ou conversa"
-          />
-        </label>
-        <label className="full">
-          Mensagem
-          <textarea
-            name="message"
-            required
-            rows={4}
-            placeholder="Conte um pouco sobre o desafio…"
-          />
-        </label>
-        <div className="contact-submit full">
-          <button className="primary" type="submit">
-            ABRIR E-MAIL <Send size={15} />
-          </button>
-          <button
-            className="secondary copy-message"
-            type="button"
-            onClick={copy}
-          >
-            {copied ? <Check size={15} /> : <Copy size={15} />}{" "}
-            {copied ? "MENSAGEM COPIADA" : "COPIAR MENSAGEM"}
-          </button>
-        </div>
-      </form>
-      <p className="contact-disclaimer">
-        Ao continuar, abriremos o aplicativo de e-mail do seu dispositivo. Se
-        ele não estiver configurado, use “Copiar mensagem”.
-      </p>
-    </div>
+    <Localized>
+      <div className="contact-form-wrap">
+        <form className="contact-form" onSubmit={submit}>
+          <label>
+            Nome
+            <input
+              name="name"
+              autoComplete="name"
+              required
+              placeholder="Como posso te chamar?"
+            />
+          </label>
+          <label>
+            E-mail
+            <input
+              name="email"
+              type="email"
+              autoComplete="email"
+              required
+              placeholder="voce@empresa.com"
+            />
+          </label>
+          <label>
+            Assunto
+            <input
+              name="subject"
+              required
+              placeholder="Projeto, oportunidade ou conversa"
+            />
+          </label>
+          <label className="full">
+            Mensagem
+            <textarea
+              name="message"
+              required
+              rows={4}
+              placeholder="Conte um pouco sobre o desafio…"
+            />
+          </label>
+          <div className="contact-submit full">
+            <button className="primary" type="submit">
+              ABRIR E-MAIL <Send size={15} />
+            </button>
+            <button
+              className="secondary copy-message"
+              type="button"
+              onClick={copy}
+            >
+              {copied ? <Check size={15} /> : <Copy size={15} />}{" "}
+              {copied ? "MENSAGEM COPIADA" : "COPIAR MENSAGEM"}
+            </button>
+          </div>
+        </form>
+        <p className="contact-disclaimer">
+          Ao continuar, abriremos o aplicativo de e-mail do seu dispositivo. Se
+          ele não estiver configurado, use “Copiar mensagem”.
+        </p>
+      </div>
+    </Localized>
   );
 }

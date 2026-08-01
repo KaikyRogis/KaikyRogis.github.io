@@ -48,10 +48,10 @@ export const projectCards = [
     slug: "ominisafety",
     title: "OminiSafety",
     type: "SaaS B2B de segurança do trabalho",
-    status: "EM DESENVOLVIMENTO",
+    status: "AJUSTES FINAIS / HOMOLOGAÇÃO",
     accent: "#30e88a",
     summary:
-      "Treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis em uma plataforma multiempresa.",
+      "Produto multiempresa em homologação, com treinamentos, conformidade, provas antifraude, certificados validáveis e evidências auditáveis.",
     tech: ["Next.js", "React", "NestJS", "Prisma", "Redis", "S3"],
   },
   {
@@ -67,13 +67,13 @@ export const projectCards = [
   },
   {
     id: "04",
-    slug: "whatsapp-hub",
-    title: "WhatsApp Hub",
-    type: "Atendimento multiempresa",
-    status: "ARQUITETURA EM EVOLUÇÃO",
+    slug: "omnichat",
+    title: "OmniChat",
+    type: "Atendimento multidepartamental",
+    status: "FRONTEND EM DESENVOLVIMENTO",
     accent: "#8b7cff",
     summary:
-      "Centralização de conversas, departamentos, filas e automação, com evolução planejada para Meta API, IA e VoIP.",
+      "Plataforma colaborativa de atendimento com frontend desenvolvido por Hauan Felipe e backend em desenvolvimento por Kaiky Rogis.",
     tech: ["WhatsApp", "Filas", "Chatbot", "Meta API", "VoIP"],
   },
 ] as const;
