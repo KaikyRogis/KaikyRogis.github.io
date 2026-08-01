@@ -54,7 +54,7 @@ npm run check:links
 npm run monitor
 ```
 
-O build estático é gerado em `out/`. A versão 2.4 mantém a experiência orientada por evidências e adiciona ergonomia mobile própria: trilho natural, controles compactos com área segura, galerias sem repetição, competências em acordeão e polimento visual responsivo.
+O build estático é gerado em `out/`. A versão 2.4.1 mantém a experiência orientada por evidências, corrige grids de status incompletos e adiciona uma rotina estável de captura visual por seção para desktop e mobile.
 
 ## Validação local
 
@@ -64,6 +64,7 @@ npm run quality
 npm run build:sites
 npm audit --omit=dev
 npm run test:visual
+npm run capture:qa
 ```
 
 ## Licença e conteúdo
