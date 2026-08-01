@@ -67,13 +67,13 @@ export const projectCards = [
   },
   {
     id: "04",
-    slug: "whatsapp-hub",
-    title: "WhatsApp Hub",
-    type: "Atendimento multiempresa",
-    status: "ARQUITETURA EM EVOLUÇÃO",
+    slug: "omnichat",
+    title: "OmniChat",
+    type: "Atendimento multidepartamental",
+    status: "FRONTEND EM DESENVOLVIMENTO",
     accent: "#8b7cff",
     summary:
-      "Centralização de conversas, departamentos, filas e automação, com evolução planejada para Meta API, IA e VoIP.",
+      "Plataforma colaborativa de atendimento com frontend desenvolvido por Hauan Felipe e backend em desenvolvimento por Kaiky Rogis.",
     tech: ["WhatsApp", "Filas", "Chatbot", "Meta API", "VoIP"],
   },
 ] as const;

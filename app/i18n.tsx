@@ -159,15 +159,24 @@ const english: Record<string, string> = {
   "Assistente inteligente": "Intelligent assistant",
   "Experiência mobile": "Mobile experience",
   "O que este projeto demonstra": "What this project demonstrates",
+  "Telas reais da interface administrativa do OminiSafety":
+    "Real screens from the OminiSafety administrative interface",
+  "Interface real do frontend em desenvolvimento, apresentada com dados demonstrativos.":
+    "Real interface from the frontend under development, shown with demonstration data.",
   "Visão de produto, arquitetura de sistemas, experiência do usuário, modelagem de processos e capacidade de construir uma solução empresarial além do código.":
     "Product vision, systems architecture, user experience, process modeling and the ability to build a business solution beyond the code.",
   "ARQUITETURA EM EVOLUÇÃO": "EVOLVING ARCHITECTURE",
   "Ecossistema financeiro pessoal": "Personal finance ecosystem",
   "Arquitetura monorepo para despesas, objetivos, relatórios, wishlist e decisões financeiras com web, API e mobile.":
     "Monorepo architecture for expenses, goals, reports, wishlists and financial decisions across web, API and mobile.",
-  "Atendimento multiempresa": "Multi-company customer service",
-  "Centralização de conversas, departamentos, filas e automação, com evolução planejada para Meta API, IA e VoIP.":
-    "Centralized conversations, departments, queues and automation, with planned evolution toward Meta API, AI and VoIP.",
+  "Atendimento multidepartamental": "Multi-department customer service",
+  "FRONTEND EM DESENVOLVIMENTO": "FRONTEND IN DEVELOPMENT",
+  "Plataforma colaborativa de atendimento com frontend desenvolvido por Hauan Felipe e backend em desenvolvimento por Kaiky Rogis.":
+    "Collaborative customer-service platform with a frontend developed by Hauan Felipe and a backend under development by Kaiky Rogis.",
+  "PROJETO COLABORATIVO": "COLLABORATIVE PROJECT",
+  "Plataforma multidepartamental de atendimento. Kaiky Rogis desenvolve o backend; Hauan Felipe é responsável pelo frontend apresentado neste case.":
+    "Multi-department customer-service platform. Kaiky Rogis develops the backend; Hauan Felipe is responsible for the frontend presented in this case.",
+  "FRONTEND POR HAUAN FELIPE": "FRONTEND BY HAUAN FELIPE",
   "Ecossistema pessoal para organizar despesas, objetivos, relatórios, wishlist e decisões financeiras.":
     "Personal ecosystem for organizing expenses, goals, reports, wishlists and financial decisions.",
   "SALDO PROJETADO": "PROJECTED BALANCE",

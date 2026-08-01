@@ -100,7 +100,7 @@ export function CommandPalette({
         label: "Baixar currículo",
         keywords: "cv pdf download",
         icon: <Download />,
-        href: "/curriculo-kaiky-rogis.pdf",
+        href: "/Currículo - Kaiky Rogis Vieira De Jesus.pdf",
       },
     ],
     [motionEnabled, onClose, onMotionToggle, onNavigate, onTerminalOpen],

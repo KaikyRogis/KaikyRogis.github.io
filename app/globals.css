@@ -2716,3 +2716,32 @@ footer {
   text-decoration: none;
   text-transform: uppercase;
 }
+
+.case-real-gallery {
+  margin: 42px 0 0;
+}
+
+.case-real-gallery img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  background: #f4f7fa;
+}
+
+.case-real-gallery figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font: 600 11px/1.5 var(--mono);
+  text-transform: uppercase;
+}
+
+.project-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  color: var(--green);
+  font: 700 11px/1.4 var(--mono);
+  text-decoration: none;
+}

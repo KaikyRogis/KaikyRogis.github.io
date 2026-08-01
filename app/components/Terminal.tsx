@@ -59,7 +59,7 @@ export function Terminal({
         experience:
           "Stage Sistemas · Analista de Suporte e Sistemas · setembro/2024 — presente.",
         projects:
-          "SintegraPro · OminiSafety · Finance OS · WhatsApp Hub · Kaiky Labs.",
+          "SintegraPro · OminiSafety · Finance OS · OmniChat · Kaiky Labs.",
         skills:
           "TypeScript · Next.js · NestJS · PostgreSQL · automação · suporte técnico avançado.",
         education:

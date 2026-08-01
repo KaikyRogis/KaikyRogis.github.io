@@ -335,8 +335,8 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   </Magnetic>
                   <a
                     className="icon-button"
-                    href="/curriculo-kaiky-rogis.pdf"
-                    download
+                    href="/Currículo - Kaiky Rogis Vieira De Jesus.pdf"
+                    download="Currículo - Kaiky Rogis Vieira De Jesus.pdf"
                     aria-label="Baixar currículo"
                   >
                     <Download size={17} />
@@ -773,6 +773,19 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   solução empresarial além do código.
                 </p>
               </div>
+              <figure className="case-real-gallery">
+                <Image
+                  src="/projects/ominisafety/admin-interface.png"
+                  alt="Telas reais da interface administrativa do OminiSafety"
+                  width={1536}
+                  height={1024}
+                  loading="lazy"
+                />
+                <figcaption>
+                  Interface real do frontend em desenvolvimento, apresentada com
+                  dados demonstrativos.
+                </figcaption>
+              </figure>
             </section>
 
             <section className="dual-cases">
@@ -819,13 +832,13 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   Recursos planejados não são apresentados como concluídos.
                 </small>
               </article>
-              <article id="whatsapp-hub">
-                <p className="kicker">CASE 04 / ARQUITETURA EM EVOLUÇÃO</p>
-                <h2>WhatsApp Hub</h2>
+              <article id="omnichat">
+                <p className="kicker">CASE 04 / PROJETO COLABORATIVO</p>
+                <h2>OmniChat</h2>
                 <p>
-                  Plataforma multiempresa para centralização de atendimentos,
-                  automação e evolução futura para telefonia e inteligência
-                  artificial.
+                  Plataforma multidepartamental de atendimento. Kaiky Rogis
+                  desenvolve o backend; Hauan Felipe é responsável pelo frontend
+                  apresentado neste case.
                 </p>
                 <div className="chat-ui">
                   <aside>
@@ -852,6 +865,14 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   <span>META API</span>
                   <span>VOIP</span>
                 </div>
+                <a
+                  className="project-source"
+                  href="https://github.com/HauanFelipe/Chat/tree/frontend-hauan"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  FRONTEND POR HAUAN FELIPE <ExternalLink size={14} />
+                </a>
               </article>
             </section>
 
@@ -1050,7 +1071,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                 >
                   <Code2 /> GITHUB
                 </a>
-                <a href="/curriculo-kaiky-rogis.pdf" download>
+                <a
+                  href="/Currículo - Kaiky Rogis Vieira De Jesus.pdf"
+                  download="Currículo - Kaiky Rogis Vieira De Jesus.pdf"
+                >
                   <Download /> CURRÍCULO
                 </a>
               </div>
