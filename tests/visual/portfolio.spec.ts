@@ -25,7 +25,11 @@ for (const viewport of viewports) {
         `hero-${viewport.width}x${viewport.height}.png`,
         { maxDiffPixelRatio: 0.04 },
       );
-    await page.locator("#projects").scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      const projects = document.querySelector<HTMLElement>("#projects");
+      if (projects)
+        window.scrollTo({ top: projects.offsetTop, behavior: "auto" });
+    });
     await page.waitForTimeout(900);
     await page.evaluate(() =>
       (document.activeElement as HTMLElement | null)?.blur(),
@@ -72,6 +76,42 @@ test("rail cards never sit legibly under the intro", async ({ page }) => {
     firstCard.boundingBox(),
   ]);
   expect(a && b && a.x + a.width > b.x && b.x + b.width > a.x).toBeFalsy();
+});
+
+test("hero identity stays visible and desktop rail cards fit vertically", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+
+  const heroCopy = page.locator(".hero-copy");
+  await expect(heroCopy).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /Kaiky Rogis/i }),
+  ).toBeVisible();
+  expect(
+    await heroCopy.evaluate((node) => getComputedStyle(node).opacity),
+  ).toBe("1");
+
+  const projectsIntro = page.locator("#projects > .projects-intro");
+  expect(
+    await projectsIntro.evaluate((node) => getComputedStyle(node).position),
+  ).toBe("absolute");
+
+  await page.locator("#projects").scrollIntoViewIfNeeded();
+  const cardBoxes = await page
+    .locator("[data-project-card]")
+    .evaluateAll((cards) =>
+      cards.map((card) => card.getBoundingClientRect().toJSON()),
+    );
+  for (const box of cardBoxes) {
+    expect(box.height).toBeLessThanOrEqual(730);
+    expect(box.y).toBeGreaterThanOrEqual(68);
+    expect(box.bottom).toBeLessThanOrEqual(900);
+  }
 });
 
 test("professional, reduced motion, English, menu and lightbox", async ({

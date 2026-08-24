@@ -230,9 +230,11 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   useEffect(() => {
     if (!motionEnabled || mode !== "experience" || window.innerWidth < 900)
       return;
+    let cancelled = false;
     let cleanup = () => {};
     Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
       ([gsapModule, triggerModule]) => {
+        if (cancelled) return;
         const gsap = gsapModule.default;
         const ScrollTrigger = triggerModule.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
@@ -331,26 +333,6 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             },
           ),
         );
-        const hero = document.querySelector<HTMLElement>(".hero");
-        const heroDepthTween = hero
-          ? gsap
-              .timeline({
-                scrollTrigger: {
-                  trigger: hero,
-                  start: "top top",
-                  end: "bottom top",
-                  scrub: 0.8,
-                },
-              })
-              .to(".hero-copy", { y: -54, opacity: 0.3, ease: "none" }, 0)
-              .to(
-                ".portrait-wrap",
-                { y: 78, scale: 0.94, opacity: 0.64, ease: "none" },
-                0,
-              )
-              .to(".grid-plane", { y: 130, opacity: 0.2, ease: "none" }, 0)
-              .to(".hero-stats", { y: 32, opacity: 0, ease: "none" }, 0)
-          : null;
         cleanup = () => {
           tween.scrollTrigger?.kill();
           tween.kill();
@@ -360,8 +342,6 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             wordTween.scrollTrigger?.kill();
             wordTween.kill();
           });
-          heroDepthTween?.scrollTrigger?.kill();
-          heroDepthTween?.kill();
           railCards.forEach((card) => {
             card.style.removeProperty("--rail-focus");
             card.style.removeProperty("--rail-offset");
@@ -370,16 +350,18 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
           });
           gsap.set(cards, { clearProps: "transform" });
           gsap.set(introElement, { clearProps: "all" });
-          if (hero) {
-            gsap.set(
-              [".hero-copy", ".portrait-wrap", ".grid-plane", ".hero-stats"],
-              { clearProps: "transform,opacity" },
-            );
-          }
+          gsap.set(
+            [".hero-copy", ".portrait-wrap", ".grid-plane", ".hero-stats"],
+            { clearProps: "transform,opacity" },
+          );
         };
+        ScrollTrigger.refresh();
       },
     );
-    return () => cleanup();
+    return () => {
+      cancelled = true;
+      cleanup();
+    };
   }, [mode, motionEnabled]);
 
   const beep = useCallback(() => {
@@ -576,7 +558,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
               </div>
               <motion.div
                 className="hero-copy"
-                initial={{ opacity: 0, y: 28 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
