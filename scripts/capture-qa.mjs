@@ -156,6 +156,13 @@ async function captureSections(browser, name, viewport) {
   });
   const page = await context.newPage();
   await preparePage(page);
+  if (name === "desktop") {
+    await page.evaluate(() => {
+      const main = document.querySelector("main");
+      main?.classList.remove("experience-mode");
+      main?.classList.add("professional-mode");
+    });
+  }
   const files = [];
   for (const [id, filename] of sections) {
     const section = page.locator(`#${id}`);
@@ -252,7 +259,7 @@ try {
     path.join(outputRoot, "manifest.json"),
     `${JSON.stringify(
       {
-        version: "2.5.0",
+        version: "2.5.1",
         generatedAt: new Date().toISOString(),
         baseURL,
         desktop: desktop.map((file) => path.basename(file)),
