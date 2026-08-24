@@ -121,6 +121,46 @@ test("primary evidence is not repeated in visible galleries", async ({
   }
 });
 
+test("project card opens the matching evidence with cinematic fallback", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    sessionStorage.setItem("kaiky-os-visited", "1");
+    Object.defineProperty(document, "startViewTransition", {
+      value: undefined,
+      configurable: true,
+    });
+  });
+  await page.goto("/");
+  const card = page.locator('[data-project-card="sintegrapro"]');
+  await card.scrollIntoViewIfNeeded();
+  await card.getByRole("button", { name: "ABRIR ESTUDO" }).click();
+  await expect(page.locator("#sintegrapro .project-evidence")).toBeInViewport({
+    ratio: 0.25,
+  });
+});
+
+test("manual motion control keeps project evidence fully visible", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  await page.getByRole("button", { name: "Abrir menu" }).click();
+  await page.getByRole("button", { name: "Desativar animações" }).click();
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await page.locator("#ominisafety").scrollIntoViewIfNeeded();
+  const evidence = page.locator("#ominisafety .project-evidence");
+  await expect(evidence).toBeVisible();
+  expect(
+    await evidence.evaluate((node) => getComputedStyle(node).opacity),
+  ).toBe("1");
+  await expect(page.locator("main")).toHaveClass(/motion-off/);
+});
+
 test("status grids omit empty groups and adapt their columns", async ({
   page,
 }) => {

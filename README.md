@@ -10,7 +10,7 @@ Portfólio profissional de Kaiky Rogis, desenvolvido para apresentar experiênci
 
 ## Destaques
 
-- apresentação cinematográfica com versão de movimento reduzido;
+- apresentação cinematográfica com profundidade responsiva e versão de movimento reduzido;
 - terminal interativo e central de navegação com `Ctrl + K`;
 - estudos de caso de SintegraPro, OminiSafety, Finance OS e OmniChat, com
   capturas reais das interfaces e status apresentados de forma transparente;
@@ -54,7 +54,7 @@ npm run check:links
 npm run monitor
 ```
 
-O build estático é gerado em `out/`. A versão 2.4.2 mantém a experiência orientada por evidências e corrige a trajetória profissional em português e inglês com base no currículo atualizado, protegida por teste de regressão.
+O build estático é gerado em `out/`. A versão 2.5 mantém a experiência orientada por evidências e adiciona profundidade responsiva, continuidade visual entre o trilho e os cases e transições progressivas com fallback, preservando acessibilidade, mobile e movimento reduzido.
 
 ## Validação local
 

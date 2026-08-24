@@ -16,9 +16,11 @@ import { ProjectStatus } from "./ProjectStatus";
 export function ProjectCase({
   project,
   locale,
+  motionEnabled,
 }: {
   project: PortfolioProject;
   locale: Locale;
+  motionEnabled: boolean;
 }) {
   const [primaryOpen, setPrimaryOpen] = useState<number | null>(null);
   const copy = getMessages(locale).projects.common;
@@ -33,6 +35,7 @@ export function ProjectCase({
       <ProjectEvidence
         project={project}
         locale={locale}
+        motionEnabled={motionEnabled}
         onOpen={() => setPrimaryOpen(0)}
       />
       <div className="problem-solution">

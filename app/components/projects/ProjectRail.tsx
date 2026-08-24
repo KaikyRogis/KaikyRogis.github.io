@@ -11,12 +11,14 @@ export function ProjectRail({
   railRef,
   introRef,
   onNavigate,
+  onProjectOpen,
 }: {
   locale: Locale;
   sectionRef: RefObject<HTMLElement | null>;
   railRef: RefObject<HTMLDivElement | null>;
   introRef: RefObject<HTMLDivElement | null>;
   onNavigate: (id: string) => void;
+  onProjectOpen: (slug: string) => void;
 }) {
   const copy = getMessages(locale).projects.rail;
   return (
@@ -36,7 +38,7 @@ export function ProjectRail({
             key={project.slug}
             project={project}
             locale={locale}
-            onOpen={() => onNavigate(`#${project.slug}`)}
+            onOpen={() => onProjectOpen(project.slug)}
           />
         ))}
         <div className="rail-end">

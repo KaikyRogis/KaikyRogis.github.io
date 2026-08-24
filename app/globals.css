@@ -2282,6 +2282,292 @@ footer p:last-child {
 .professional-mode .orbital-labels {
   display: none;
 }
+
+/* Portfolio 2.5 — Motion depth & cinematic continuity */
+.experience-mode .hero-copy > .eyebrow,
+.experience-mode .hero-copy > h1,
+.experience-mode .hero-copy > .hero-lead,
+.experience-mode .hero-copy > .hero-sub,
+.experience-mode .hero-copy > .hero-buttons {
+  transform: translate3d(
+    calc(var(--depth-x, 0) * -10px),
+    calc(var(--depth-y, 0) * -7px),
+    0
+  );
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.experience-mode .hero-copy > h1 {
+  transform: translate3d(
+    calc(var(--depth-x, 0) * -18px),
+    calc(var(--depth-y, 0) * -12px),
+    0
+  );
+}
+.experience-mode .portrait-wrap img {
+  transform: translate3d(
+      calc(var(--depth-x, 0) * 15px),
+      calc(var(--depth-y, 0) * 10px),
+      0
+    )
+    scale(1.025);
+  transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.experience-mode .orbital-labels span {
+  translate: calc(var(--depth-x, 0) * 12px) calc(var(--depth-y, 0) * 8px);
+  transition: translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.experience-mode .hero::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 12% 4% 9% 40%;
+  pointer-events: none;
+  border: 1px solid rgba(0, 217, 255, 0.08);
+  background:
+    linear-gradient(90deg, transparent, rgba(0, 217, 255, 0.04), transparent),
+    radial-gradient(circle at 70% 42%, rgba(0, 217, 255, 0.12), transparent 34%);
+  transform: translate3d(
+    calc(var(--depth-x, 0) * 8px),
+    calc(var(--depth-y, 0) * 6px),
+    0
+  );
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 20%,
+    #000 78%,
+    transparent
+  );
+}
+.manifesto {
+  position: relative;
+}
+.manifesto::before {
+  content: "SYSTEM / THOUGHT PROCESS";
+  position: absolute;
+  top: 0;
+  left: 7vw;
+  right: 7vw;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  border-top: 1px solid rgba(0, 217, 255, 0.42);
+  color: #4f6a63;
+  font: 700 8px/1 var(--font-geist-mono);
+  letter-spacing: 0.18em;
+}
+.projects-cinema {
+  --rail-accent: var(--cyan);
+  background:
+    radial-gradient(
+      circle at 72% 50%,
+      color-mix(in srgb, var(--rail-accent) 11%, transparent),
+      transparent 34%
+    ),
+    #05070b;
+  transition: background 0.75s ease;
+}
+.projects-cinema::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 46%,
+    color-mix(in srgb, var(--rail-accent) 8%, transparent) 72%,
+    transparent
+  );
+  transition: background 0.7s ease;
+}
+@media (min-width: 900px) {
+  .experience-mode .projects-cinema {
+    height: calc(100vh + 92px);
+  }
+  .experience-mode .project-rail {
+    padding-left: 52vw;
+  }
+}
+.project-rail,
+.projects-intro {
+  position: relative;
+  z-index: 2;
+}
+.project-card {
+  --card-x: 50%;
+  --card-y: 50%;
+  --card-rotate-x: 0deg;
+  --card-rotate-y: 0deg;
+  --rail-focus: 1;
+  --rail-offset: 0px;
+  --rail-scale: 1;
+  --rail-opacity: 1;
+  transform: perspective(1300px) rotateX(var(--card-rotate-x))
+    rotateY(var(--card-rotate-y)) translateY(var(--rail-offset))
+    scale(var(--rail-scale));
+  opacity: var(--rail-opacity);
+  box-shadow:
+    0 38px 100px rgba(0, 0, 0, 0.42),
+    0 0 calc(var(--rail-focus) * 34px)
+      color-mix(in srgb, var(--accent) 14%, transparent);
+  transition:
+    transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+  transform-style: preserve-3d;
+}
+.project-card::before {
+  background: radial-gradient(
+    circle at var(--card-x) var(--card-y),
+    color-mix(in srgb, var(--accent) 25%, transparent),
+    transparent 42%
+  );
+  transition: background 0.18s linear;
+}
+.project-card::after {
+  content: "";
+  position: absolute;
+  z-index: 4;
+  inset: -1px;
+  pointer-events: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+  opacity: calc(0.18 + var(--rail-focus) * 0.42);
+  mask-image: linear-gradient(
+    135deg,
+    #000,
+    transparent 36%,
+    transparent 72%,
+    #000
+  );
+}
+.project-card-evidence {
+  transform: translateZ(22px);
+  transition:
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+.project-card:hover .project-card-evidence {
+  transform: translateZ(34px) translateY(-3px);
+  border-color: color-mix(in srgb, var(--accent) 52%, transparent);
+  box-shadow: 0 34px 88px rgba(0, 0, 0, 0.5);
+}
+.project-card-top b {
+  animation: project-signal 1.8s ease-in-out infinite;
+}
+.project-card > button svg,
+.rail-end button svg {
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-card > button:hover svg,
+.rail-end button:hover svg {
+  transform: translate(4px, 4px);
+}
+.evidence-cases {
+  position: relative;
+  isolation: isolate;
+}
+.evidence-case {
+  isolation: isolate;
+}
+.evidence-case::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 84% 12%,
+      color-mix(in srgb, var(--project-accent) 15%, transparent),
+      transparent 31%
+    ),
+    linear-gradient(
+      150deg,
+      transparent 45%,
+      color-mix(in srgb, var(--project-accent) 5%, transparent)
+    );
+}
+.project-evidence > button {
+  transition:
+    border-color 0.35s ease,
+    box-shadow 0.45s ease,
+    transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-evidence > button:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--project-accent) 68%, #263544);
+  box-shadow:
+    0 34px 100px rgba(0, 0, 0, 0.4),
+    0 0 45px color-mix(in srgb, var(--project-accent) 13%, transparent);
+}
+.project-evidence img {
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.project-evidence > button:hover img {
+  transform: scale(1.012);
+}
+::view-transition-group(project-visual) {
+  z-index: 120;
+  animation-duration: 0.9s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+::view-transition-old(project-visual),
+::view-transition-new(project-visual) {
+  height: 100%;
+  object-fit: cover;
+  animation-duration: 0.9s;
+}
+@keyframes project-signal {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 10px currentColor;
+  }
+}
+@media (max-width: 899px), (pointer: coarse) {
+  .project-card {
+    transform: none;
+    opacity: 1;
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+  }
+  .project-card-evidence,
+  .project-card:hover .project-card-evidence {
+    transform: none;
+  }
+  .experience-mode .hero-copy > *,
+  .experience-mode .portrait-wrap img,
+  .experience-mode .orbital-labels span,
+  .experience-mode .hero::after {
+    translate: none;
+    transform: none;
+  }
+  .projects-cinema::after {
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-card,
+  .project-card-evidence,
+  .project-evidence,
+  .project-evidence > button,
+  .project-evidence img,
+  .hero-copy > *,
+  .portrait-wrap img,
+  .orbital-labels span,
+  .hero::after {
+    transform: none !important;
+    translate: none !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
 .professional-mode .projects-cinema {
   min-height: auto;
   padding: 120px 7vw;
@@ -2771,7 +3057,7 @@ footer {
   }
 }
 
-/* Portfolio 2.4.2 — Factual experience correction */
+/* Portfolio 2.5 — Motion depth & cinematic continuity */
 .evidence-case {
   --project-accent: var(--cyan);
 }
