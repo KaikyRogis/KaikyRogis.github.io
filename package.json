@@ -1,6 +1,6 @@
 {
   "name": "kaiky-rogis-portfolio",
-  "version": "2.5.0",
+  "version": "2.5.1",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -26,36 +26,36 @@
     "quality": "npm run format:check && npm run typecheck && npm run lint && npm run check:images && npm run build && npm run check:links"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.6.1",
+    "@react-three/drei": "^10.7.8",
+    "@react-three/fiber": "^9.7.0",
     "gsap": "^3.15.0",
     "lucide-react": "^1.27.0",
     "motion": "^12.43.0",
     "next": "^16.2.12",
-    "react": "19.2.6",
-    "react-dom": "19.2.6",
-    "three": "^0.185.1"
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "three": "0.184.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
-    "@cloudflare/vite-plugin": "1.37.1",
+    "@cloudflare/vite-plugin": "^1.53.1",
     "@playwright/test": "^1.54.2",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
-    "@types/three": "^0.185.1",
+    "@types/three": "0.184.1",
     "@vitejs/plugin-react": "6.0.2",
     "@vitejs/plugin-rsc": "0.5.26",
     "eslint": "^9.39.2",
     "eslint-config-next": "^16.2.12",
     "prettier": "^3.8.2",
-    "react-server-dom-webpack": "19.2.6",
+    "react-server-dom-webpack": "19.2.8",
     "serve": "^14.2.4",
     "sharp": "0.35.3",
     "typescript": "5.9.3",
     "vinext": "0.0.50",
-    "vite": "8.0.13",
-    "wrangler": "4.92.0"
+    "vite": "^8.2.2",
+    "wrangler": "^4.125.0"
   },
   "overrides": {
     "postcss": "8.5.25",

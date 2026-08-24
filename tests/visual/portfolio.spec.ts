@@ -307,6 +307,35 @@ test("contact navigation remains active at the end of the page", async ({
   ).not.toHaveAttribute("aria-current", "location");
 });
 
+test("Finance OS transactions screenshot has accurate accessible text", async ({
+  page,
+}) => {
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+
+  await page.goto("/");
+  const ptImage = page
+    .getByRole("img", {
+      name: "Movimentações demonstrativas do Finance OS",
+    })
+    .first();
+  await expect(ptImage).toBeVisible();
+  await expect(ptImage).toHaveAttribute(
+    "src",
+    /\/projects\/finance-os\/movimentacoes\.webp$/,
+  );
+
+  await page.goto("/en/");
+  await expect(
+    page
+      .getByRole("img", {
+        name: "Finance OS demonstration transactions",
+      })
+      .first(),
+  ).toBeVisible();
+});
+
 test("project progress disappears after project cases", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() =>

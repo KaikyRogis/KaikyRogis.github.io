@@ -54,7 +54,7 @@ npm run check:links
 npm run monitor
 ```
 
-O build estático é gerado em `out/`. A versão 2.5 mantém a experiência orientada por evidências e adiciona profundidade responsiva, continuidade visual entre o trilho e os cases e transições progressivas com fallback, preservando acessibilidade, mobile e movimento reduzido.
+O build estático é gerado em `out/`. A versão 2.5.1 mantém a experiência orientada por evidências, corrige a descrição acessível da captura de movimentações do Finance OS e alinha a compatibilidade entre Three.js e o renderizador 3D, preservando profundidade responsiva, acessibilidade, mobile e movimento reduzido.
 
 ## Validação local
 

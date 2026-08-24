@@ -946,7 +946,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                 <span>KR</span>
                 <b>KAIKY.ROGIS</b>
               </div>
-              <p>KAIKY.OS · PORTFOLIO VERSION 2.5</p>
+              <p>KAIKY.OS · PORTFOLIO VERSION 2.5.1</p>
               <p>
                 <i /> ALL SYSTEMS OPERATIONAL
               </p>

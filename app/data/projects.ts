@@ -261,10 +261,10 @@ export const projects: PortfolioProject[] = [
         height: 1080,
       },
       {
-        src: "/projects/finance-os/planejamento-wishlist.webp",
+        src: "/projects/finance-os/movimentacoes.webp",
         alt: {
-          pt: "Wishlist demonstrativa do Finance OS",
-          en: "Finance OS demonstration wishlist",
+          pt: "Movimentações demonstrativas do Finance OS",
+          en: "Finance OS demonstration transactions",
         },
         caption: {
           pt: "Movimentações, filtros e organização financeira",
