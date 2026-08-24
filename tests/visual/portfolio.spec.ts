@@ -90,14 +90,48 @@ test("professional, reduced motion, English, menu and lightbox", async ({
     .click();
   await page.getByRole("button", { name: "Close menu" }).click();
   await page.locator("#ominisafety").scrollIntoViewIfNeeded();
-  await page
-    .locator("#ominisafety .project-gallery figure button")
-    .first()
-    .click();
+  await page.locator("#ominisafety .gallery-feature-image").click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
+});
+
+test("project galleries keep complete images and switch the featured evidence", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  const gallery = page.locator("#ominisafety .project-gallery");
+  await gallery.scrollIntoViewIfNeeded();
+
+  const featured = gallery.locator(".gallery-feature-image img");
+  await expect(featured).toHaveAttribute("src", /gestao-empresas/);
+  expect(
+    await featured.evaluate((node) => getComputedStyle(node).objectFit),
+  ).toBe("contain");
+
+  const thumbnails = gallery.locator(".gallery-filmstrip > button");
+  await expect(thumbnails).toHaveCount(2);
+  await thumbnails.nth(1).click();
+  await expect(featured).toHaveAttribute("src", /catalogo-ehs/);
+  await expect(thumbnails.nth(1)).toHaveAttribute("aria-pressed", "true");
+
+  for (const selector of [
+    "#ominisafety .project-evidence img",
+    '[data-project-card="ominisafety"] .project-card-evidence img',
+    "#ominisafety .gallery-thumb-image img",
+  ]) {
+    expect(
+      await page
+        .locator(selector)
+        .first()
+        .evaluate((node) => getComputedStyle(node).objectFit),
+    ).toBe("contain");
+  }
 });
 
 test("primary evidence is not repeated in visible galleries", async ({

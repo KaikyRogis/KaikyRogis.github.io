@@ -159,7 +159,7 @@ export const projects: PortfolioProject[] = [
           en: "Multi-company dashboard and operational alerts",
         },
         width: 1920,
-        height: 1080,
+        height: 1528,
       },
       {
         src: "/projects/ominisafety/gestao-empresas.webp",
@@ -172,7 +172,7 @@ export const projects: PortfolioProject[] = [
           en: "Company, contract and status management",
         },
         width: 1920,
-        height: 1080,
+        height: 1485,
       },
       {
         src: "/projects/ominisafety/catalogo-ehs.webp",
@@ -185,7 +185,7 @@ export const projects: PortfolioProject[] = [
           en: "Legal EHS training catalog",
         },
         width: 1920,
-        height: 1080,
+        height: 1164,
       },
     ],
     note: {

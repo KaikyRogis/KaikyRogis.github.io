@@ -20,17 +20,16 @@ export function ProjectGallery({
   project: string;
 }) {
   const [active, setActive] = useState<number | null>(null);
-  const triggers = useRef<Array<HTMLButtonElement | null>>([]);
+  const [selected, setSelected] = useState(1);
+  const stageTrigger = useRef<HTMLButtonElement | null>(null);
   const copy = getMessages(locale).projects.common;
   const visibleShots = shots.slice(1);
+  const selectedShot = shots[selected] ?? visibleShots[0];
   const close = () => {
-    const index = active;
     setActive(null);
-    window.setTimeout(
-      () => index !== null && triggers.current[index]?.focus(),
-      0,
-    );
+    window.setTimeout(() => stageTrigger.current?.focus(), 0);
   };
+  if (!selectedShot) return null;
   return (
     <section
       className="project-gallery"
@@ -40,19 +39,50 @@ export function ProjectGallery({
         <span>{copy.gallery}</span>
         <b>{String(visibleShots.length).padStart(2, "0")} CAPTURAS</b>
       </div>
-      <div className="project-gallery-track">
+      <div className="gallery-feature">
+        <button
+          ref={stageTrigger}
+          className="gallery-feature-image"
+          onClick={() => setActive(selected)}
+          data-cursor="ZOOM"
+          aria-label={`${copy.expand}: ${selectedShot.caption[locale]}`}
+        >
+          <Image
+            src={selectedShot.src}
+            alt={selectedShot.alt[locale]}
+            width={selectedShot.width}
+            height={selectedShot.height}
+            sizes="(max-width: 720px) 100vw, 1180px"
+            loading="lazy"
+          />
+          <span className="demo-watermark">{copy.demo}</span>
+          <span className="expand-label">
+            <Expand /> {copy.expand}
+          </span>
+        </button>
+        <div className="gallery-feature-copy">
+          <span>
+            {String(selected + 1).padStart(2, "0")} /{" "}
+            {String(shots.length).padStart(2, "0")}
+          </span>
+          <strong>{selectedShot.caption[locale]}</strong>
+          <button onClick={() => setActive(selected)}>
+            {copy.expand} <Expand />
+          </button>
+        </div>
+      </div>
+      <div className="gallery-filmstrip" aria-label={copy.gallery}>
         {visibleShots.map((shot, index) => {
           const lightboxIndex = index + 1;
           return (
-            <figure key={shot.src} className="secondary">
-              <button
-                ref={(node) => {
-                  triggers.current[lightboxIndex] = node;
-                }}
-                onClick={() => setActive(lightboxIndex)}
-                data-cursor="ZOOM"
-                aria-label={`${copy.expand}: ${shot.caption[locale]}`}
-              >
+            <button
+              key={shot.src}
+              className={selected === lightboxIndex ? "active" : ""}
+              onClick={() => setSelected(lightboxIndex)}
+              aria-pressed={selected === lightboxIndex}
+              aria-label={`${String(lightboxIndex + 1).padStart(2, "0")}: ${shot.caption[locale]}`}
+            >
+              <span className="gallery-thumb-image">
                 <Image
                   src={shot.src}
                   alt={shot.alt[locale]}
@@ -61,19 +91,12 @@ export function ProjectGallery({
                   sizes="(max-width: 720px) 78vw, 42vw"
                   loading="lazy"
                 />
-                <span className="demo-watermark">{copy.demo}</span>
-                <span className="expand-label">
-                  <Expand /> {copy.expand}
-                </span>
-              </button>
-              <figcaption>
-                <span>
-                  {String(lightboxIndex + 1).padStart(2, "0")} /{" "}
-                  {String(shots.length).padStart(2, "0")}
-                </span>
-                {shot.caption[locale]}
-              </figcaption>
-            </figure>
+              </span>
+              <span className="gallery-thumb-copy">
+                <b>{String(lightboxIndex + 1).padStart(2, "0")}</b>
+                <span>{shot.caption[locale]}</span>
+              </span>
+            </button>
           );
         })}
       </div>

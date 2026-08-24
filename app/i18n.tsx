@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Children,
   cloneElement,
   createContext,
   isValidElement,
@@ -396,7 +397,7 @@ export function translateText(value: string, locale: Locale) {
 function translateNode(node: ReactNode, locale: Locale): ReactNode {
   if (typeof node === "string") return translateText(node, locale);
   if (Array.isArray(node))
-    return node.map((item) => translateNode(item, locale));
+    return Children.map(node, (item) => translateNode(item, locale));
   if (!isValidElement<Record<string, unknown>>(node)) return node;
 
   const props: Record<string, unknown> = {};
