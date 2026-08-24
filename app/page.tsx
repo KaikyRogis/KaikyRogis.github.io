@@ -40,6 +40,11 @@ import { Locale, LocaleProvider, Localized } from "./i18n";
 
 const SystemScene = dynamic(() => import("./SystemScene"), { ssr: false });
 
+type ViewTransition = { finished: Promise<void> };
+type TransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => ViewTransition;
+};
+
 export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   const reducedSystem = useReducedMotion();
   const [mode, setMode] = useState<PortfolioMode>("experience");
@@ -59,6 +64,9 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   const projectIntro = useRef<HTMLDivElement>(null);
   const projectProgressVisible =
     activeSection === "projects" && Boolean(activeProject);
+  const activeAccent =
+    projects.find((project) => project.slug === activeProject)?.accent ??
+    "#00d9ff";
 
   useEffect(() => {
     if (!reducedSystem) return;
@@ -67,12 +75,35 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   }, [reducedSystem]);
 
   useEffect(() => {
+    const navigationSectionIds = [
+      "about",
+      "capabilities",
+      "projects",
+      "labs",
+      "experience",
+      "skills",
+      "education",
+      "contact",
+    ];
+    const isAtPageEnd = () =>
+      window.scrollY + window.innerHeight >=
+      document.documentElement.scrollHeight - 8;
     const updateProgress = () => {
       const available =
         document.documentElement.scrollHeight - window.innerHeight;
       setPageProgress(
         available > 0 ? Math.round((window.scrollY / available) * 100) : 0,
       );
+      if (isAtPageEnd()) {
+        setActiveSection("contact");
+        return;
+      }
+      const readingLine = window.innerHeight * 0.35;
+      const currentSection = navigationSectionIds.find((id) => {
+        const rect = document.getElementById(id)?.getBoundingClientRect();
+        return rect && rect.top <= readingLine && rect.bottom > readingLine;
+      });
+      if (currentSection) setActiveSection(currentSection);
     };
     const observer = new IntersectionObserver(
       (entries) => {
@@ -90,33 +121,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
       const node = document.getElementById(project.slug);
       if (node) observer.observe(node);
     });
-    const navigationObserver = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveSection((visible.target as HTMLElement).id);
-      },
-      { rootMargin: "-28% 0px -60%", threshold: [0, 0.15, 0.4] },
-    );
-    [
-      "about",
-      "capabilities",
-      "projects",
-      "labs",
-      "experience",
-      "skills",
-      "education",
-      "contact",
-    ].forEach((id) => {
-      const node = document.getElementById(id);
-      if (node) navigationObserver.observe(node);
-    });
     window.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
     return () => {
       observer.disconnect();
-      navigationObserver.disconnect();
       window.removeEventListener("scroll", updateProgress);
     };
   }, []);
@@ -184,11 +192,49 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   }, [intro, mode, motionEnabled]);
 
   useEffect(() => {
+    if (!motionEnabled || mode !== "experience") return;
+    const hero = document.querySelector<HTMLElement>(".hero");
+    if (!hero) return;
+    let frame = 0;
+    const update = (event: PointerEvent) => {
+      if (!window.matchMedia("(pointer: fine)").matches) return;
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => {
+        const bounds = hero.getBoundingClientRect();
+        const x = Math.max(
+          0,
+          Math.min(1, (event.clientX - bounds.left) / bounds.width),
+        );
+        const y = Math.max(
+          0,
+          Math.min(1, (event.clientY - bounds.top) / bounds.height),
+        );
+        hero.style.setProperty("--depth-x", `${(x - 0.5).toFixed(3)}`);
+        hero.style.setProperty("--depth-y", `${(y - 0.5).toFixed(3)}`);
+      });
+    };
+    const reset = () => {
+      hero.style.setProperty("--depth-x", "0");
+      hero.style.setProperty("--depth-y", "0");
+    };
+    hero.addEventListener("pointermove", update);
+    hero.addEventListener("pointerleave", reset);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      hero.removeEventListener("pointermove", update);
+      hero.removeEventListener("pointerleave", reset);
+      reset();
+    };
+  }, [mode, motionEnabled]);
+
+  useEffect(() => {
     if (!motionEnabled || mode !== "experience" || window.innerWidth < 900)
       return;
+    let cancelled = false;
     let cleanup = () => {};
     Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
       ([gsapModule, triggerModule]) => {
+        if (cancelled) return;
         const gsap = gsapModule.default;
         const ScrollTrigger = triggerModule.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
@@ -196,6 +242,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
         const container = projectPin.current;
         const introElement = projectIntro.current;
         if (!cards || !container || !introElement) return;
+        const railCards = gsap.utils.toArray<HTMLElement>(
+          "[data-project-card]",
+          cards,
+        );
         const distance = () =>
           Math.max(0, cards.scrollWidth - window.innerWidth + 80);
         const tween = gsap.to(cards, {
@@ -208,6 +258,47 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             scrub: 1,
             pin: true,
             invalidateOnRefresh: true,
+            onUpdate: () => {
+              const center = window.innerWidth / 2;
+              let closest: HTMLElement | null = null;
+              let closestDistance = Number.POSITIVE_INFINITY;
+              railCards.forEach((card) => {
+                const bounds = card.getBoundingClientRect();
+                const distanceFromCenter = Math.abs(
+                  bounds.left + bounds.width / 2 - center,
+                );
+                const focus = Math.max(
+                  0,
+                  1 -
+                    distanceFromCenter / Math.max(window.innerWidth * 0.72, 1),
+                );
+                card.style.setProperty("--rail-focus", focus.toFixed(3));
+                card.style.setProperty(
+                  "--rail-offset",
+                  `${((1 - focus) * 12).toFixed(2)}px`,
+                );
+                card.style.setProperty(
+                  "--rail-scale",
+                  (0.965 + focus * 0.035).toFixed(4),
+                );
+                card.style.setProperty(
+                  "--rail-opacity",
+                  (0.76 + focus * 0.24).toFixed(3),
+                );
+                if (distanceFromCenter < closestDistance) {
+                  closest = card;
+                  closestDistance = distanceFromCenter;
+                }
+              });
+              if (closest) {
+                container.style.setProperty(
+                  "--rail-accent",
+                  (closest as HTMLElement).dataset.accent ?? "#00d9ff",
+                );
+                container.dataset.activeCard =
+                  (closest as HTMLElement).dataset.projectCard ?? "";
+              }
+            },
           },
         });
         const introTween = gsap.fromTo(
@@ -251,12 +342,26 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
             wordTween.scrollTrigger?.kill();
             wordTween.kill();
           });
+          railCards.forEach((card) => {
+            card.style.removeProperty("--rail-focus");
+            card.style.removeProperty("--rail-offset");
+            card.style.removeProperty("--rail-scale");
+            card.style.removeProperty("--rail-opacity");
+          });
           gsap.set(cards, { clearProps: "transform" });
           gsap.set(introElement, { clearProps: "all" });
+          gsap.set(
+            [".hero-copy", ".portrait-wrap", ".grid-plane", ".hero-stats"],
+            { clearProps: "transform,opacity" },
+          );
         };
+        ScrollTrigger.refresh();
       },
     );
-    return () => cleanup();
+    return () => {
+      cancelled = true;
+      cleanup();
+    };
   }, [mode, motionEnabled]);
 
   const beep = useCallback(() => {
@@ -287,6 +392,45 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
       beep();
     },
     [beep, motionEnabled],
+  );
+
+  const openProject = useCallback(
+    (slug: string) => {
+      const target = document.querySelector<HTMLElement>(
+        `[data-project-evidence="${slug}"]`,
+      );
+      const source = document.querySelector<HTMLElement>(
+        `[data-project-card="${slug}"] .project-card-evidence`,
+      );
+      const transitionDocument = document as TransitionDocument;
+      if (
+        !motionEnabled ||
+        mode !== "experience" ||
+        !transitionDocument.startViewTransition ||
+        !source ||
+        !target
+      ) {
+        goTo(`#${slug}`);
+        return;
+      }
+
+      source.style.viewTransitionName = "project-visual";
+      const transition = transitionDocument.startViewTransition(() => {
+        source.style.viewTransitionName = "none";
+        target.style.viewTransitionName = "project-visual";
+        const destination =
+          target.closest<HTMLElement>(".evidence-case") ?? target;
+        const top = destination.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top, behavior: "auto" });
+      });
+      transition.finished.finally(() => {
+        source.style.removeProperty("view-transition-name");
+        target.style.removeProperty("view-transition-name");
+        target.focus({ preventScroll: true });
+      });
+      beep();
+    },
+    [beep, goTo, mode, motionEnabled],
   );
 
   const closeTerminal = useCallback(() => setTerminalOpen(false), []);
@@ -366,6 +510,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
           <main
             className={`${mode}-mode ${motionEnabled ? "" : "motion-off"} ${retro ? "retro-mode" : ""}`}
             id="top"
+            data-active-project={activeProject ?? "none"}
+            style={
+              { "--active-project-accent": activeAccent } as React.CSSProperties
+            }
           >
             <AnimatePresence>
               {intro && (
@@ -410,7 +558,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
               </div>
               <motion.div
                 className="hero-copy"
-                initial={{ opacity: 0, y: 28 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
               >
@@ -585,6 +733,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
               railRef={projectRail}
               introRef={projectIntro}
               onNavigate={goTo}
+              onProjectOpen={openProject}
             />
             <div className="evidence-cases">
               {projects.map((project) => (
@@ -592,6 +741,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                   key={project.slug}
                   project={project}
                   locale={locale}
+                  motionEnabled={motionEnabled && mode === "experience"}
                 />
               ))}
             </div>
@@ -796,7 +946,7 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
                 <span>KR</span>
                 <b>KAIKY.ROGIS</b>
               </div>
-              <p>KAIKY.OS · PORTFOLIO VERSION 2.4.2</p>
+              <p>KAIKY.OS · PORTFOLIO VERSION 2.5</p>
               <p>
                 <i /> ALL SYSTEMS OPERATIONAL
               </p>

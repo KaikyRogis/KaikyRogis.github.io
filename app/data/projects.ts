@@ -159,7 +159,7 @@ export const projects: PortfolioProject[] = [
           en: "Multi-company dashboard and operational alerts",
         },
         width: 1920,
-        height: 1080,
+        height: 1528,
       },
       {
         src: "/projects/ominisafety/gestao-empresas.webp",
@@ -172,7 +172,7 @@ export const projects: PortfolioProject[] = [
           en: "Company, contract and status management",
         },
         width: 1920,
-        height: 1080,
+        height: 1485,
       },
       {
         src: "/projects/ominisafety/catalogo-ehs.webp",
@@ -185,7 +185,7 @@ export const projects: PortfolioProject[] = [
           en: "Legal EHS training catalog",
         },
         width: 1920,
-        height: 1080,
+        height: 1164,
       },
     ],
     note: {
@@ -257,8 +257,8 @@ export const projects: PortfolioProject[] = [
           pt: "Dashboard, saldo e projeção financeira",
           en: "Dashboard, balance and financial projection",
         },
-        width: 1265,
-        height: 712,
+        width: 1920,
+        height: 1080,
       },
       {
         src: "/projects/finance-os/planejamento-wishlist.webp",
@@ -267,11 +267,11 @@ export const projects: PortfolioProject[] = [
           en: "Finance OS demonstration wishlist",
         },
         caption: {
-          pt: "Wishlist, prioridade e progresso financeiro",
-          en: "Wishlist, priority and financial progress",
+          pt: "Movimentações, filtros e organização financeira",
+          en: "Transactions, filters and financial organization",
         },
-        width: 1265,
-        height: 712,
+        width: 1920,
+        height: 1080,
       },
       {
         src: "/projects/finance-os/faturas-cartoes.webp",
@@ -283,8 +283,8 @@ export const projects: PortfolioProject[] = [
           pt: "Cartões, faturas, pagamentos e limites",
           en: "Cards, invoices, payments and limits",
         },
-        width: 1265,
-        height: 712,
+        width: 1920,
+        height: 1080,
       },
     ],
     note: {
@@ -361,8 +361,8 @@ export const projects: PortfolioProject[] = [
           pt: "Filas, conversas e comentários internos",
           en: "Queues, conversations and internal comments",
         },
-        width: 1280,
-        height: 720,
+        width: 1920,
+        height: 1080,
       },
       {
         src: "/projects/omnichat/agenda.webp",
@@ -374,8 +374,8 @@ export const projects: PortfolioProject[] = [
           pt: "Agenda de compromissos e retornos",
           en: "Schedule for appointments and follow-ups",
         },
-        width: 1280,
-        height: 720,
+        width: 1920,
+        height: 1080,
       },
       {
         src: "/projects/omnichat/login.webp",
@@ -387,8 +387,8 @@ export const projects: PortfolioProject[] = [
           pt: "Acesso corporativo ao painel",
           en: "Corporate dashboard access",
         },
-        width: 1265,
-        height: 712,
+        width: 1920,
+        height: 1080,
       },
     ],
     note: {

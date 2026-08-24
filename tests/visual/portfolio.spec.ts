@@ -25,7 +25,11 @@ for (const viewport of viewports) {
         `hero-${viewport.width}x${viewport.height}.png`,
         { maxDiffPixelRatio: 0.04 },
       );
-    await page.locator("#projects").scrollIntoViewIfNeeded();
+    await page.evaluate(() => {
+      const projects = document.querySelector<HTMLElement>("#projects");
+      if (projects)
+        window.scrollTo({ top: projects.offsetTop, behavior: "auto" });
+    });
     await page.waitForTimeout(900);
     await page.evaluate(() =>
       (document.activeElement as HTMLElement | null)?.blur(),
@@ -74,6 +78,42 @@ test("rail cards never sit legibly under the intro", async ({ page }) => {
   expect(a && b && a.x + a.width > b.x && b.x + b.width > a.x).toBeFalsy();
 });
 
+test("hero identity stays visible and desktop rail cards fit vertically", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+
+  const heroCopy = page.locator(".hero-copy");
+  await expect(heroCopy).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: /Kaiky Rogis/i }),
+  ).toBeVisible();
+  expect(
+    await heroCopy.evaluate((node) => getComputedStyle(node).opacity),
+  ).toBe("1");
+
+  const projectsIntro = page.locator("#projects > .projects-intro");
+  expect(
+    await projectsIntro.evaluate((node) => getComputedStyle(node).position),
+  ).toBe("absolute");
+
+  await page.locator("#projects").scrollIntoViewIfNeeded();
+  const cardBoxes = await page
+    .locator("[data-project-card]")
+    .evaluateAll((cards) =>
+      cards.map((card) => card.getBoundingClientRect().toJSON()),
+    );
+  for (const box of cardBoxes) {
+    expect(box.height).toBeLessThanOrEqual(730);
+    expect(box.y).toBeGreaterThanOrEqual(68);
+    expect(box.bottom).toBeLessThanOrEqual(900);
+  }
+});
+
 test("professional, reduced motion, English, menu and lightbox", async ({
   page,
 }) => {
@@ -90,14 +130,48 @@ test("professional, reduced motion, English, menu and lightbox", async ({
     .click();
   await page.getByRole("button", { name: "Close menu" }).click();
   await page.locator("#ominisafety").scrollIntoViewIfNeeded();
-  await page
-    .locator("#ominisafety .project-gallery figure button")
-    .first()
-    .click();
+  await page.locator("#ominisafety .gallery-feature-image").click();
   await expect(page.getByRole("dialog")).toBeVisible();
   await page.keyboard.press("ArrowRight");
   await page.keyboard.press("Escape");
   await expect(page.getByRole("dialog")).toBeHidden();
+});
+
+test("project galleries keep complete images and switch the featured evidence", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  const gallery = page.locator("#ominisafety .project-gallery");
+  await gallery.scrollIntoViewIfNeeded();
+
+  const featured = gallery.locator(".gallery-feature-image img");
+  await expect(featured).toHaveAttribute("src", /gestao-empresas/);
+  expect(
+    await featured.evaluate((node) => getComputedStyle(node).objectFit),
+  ).toBe("contain");
+
+  const thumbnails = gallery.locator(".gallery-filmstrip > button");
+  await expect(thumbnails).toHaveCount(2);
+  await thumbnails.nth(1).click();
+  await expect(featured).toHaveAttribute("src", /catalogo-ehs/);
+  await expect(thumbnails.nth(1)).toHaveAttribute("aria-pressed", "true");
+
+  for (const selector of [
+    "#ominisafety .project-evidence img",
+    '[data-project-card="ominisafety"] .project-card-evidence img',
+    "#ominisafety .gallery-thumb-image img",
+  ]) {
+    expect(
+      await page
+        .locator(selector)
+        .first()
+        .evaluate((node) => getComputedStyle(node).objectFit),
+    ).toBe("contain");
+  }
 });
 
 test("primary evidence is not repeated in visible galleries", async ({
@@ -119,6 +193,46 @@ test("primary evidence is not repeated in visible galleries", async ({
       );
     expect(gallerySources).not.toContain(evidenceSrc);
   }
+});
+
+test("project card opens the matching evidence with cinematic fallback", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() => {
+    sessionStorage.setItem("kaiky-os-visited", "1");
+    Object.defineProperty(document, "startViewTransition", {
+      value: undefined,
+      configurable: true,
+    });
+  });
+  await page.goto("/");
+  const card = page.locator('[data-project-card="sintegrapro"]');
+  await card.scrollIntoViewIfNeeded();
+  await card.getByRole("button", { name: "ABRIR ESTUDO" }).click();
+  await expect(page.locator("#sintegrapro .project-evidence")).toBeInViewport({
+    ratio: 0.25,
+  });
+});
+
+test("manual motion control keeps project evidence fully visible", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  await page.getByRole("button", { name: "Abrir menu" }).click();
+  await page.getByRole("button", { name: "Desativar animações" }).click();
+  await page.getByRole("button", { name: "Fechar menu" }).click();
+  await page.locator("#ominisafety").scrollIntoViewIfNeeded();
+  const evidence = page.locator("#ominisafety .project-evidence");
+  await expect(evidence).toBeVisible();
+  expect(
+    await evidence.evaluate((node) => getComputedStyle(node).opacity),
+  ).toBe("1");
+  await expect(page.locator("main")).toHaveClass(/motion-off/);
 });
 
 test("status grids omit empty groups and adapt their columns", async ({
@@ -163,6 +277,34 @@ test("mobile dock avoids contact and footer", async ({ page }) => {
   await page.locator("#contact").scrollIntoViewIfNeeded();
   await expect(page.locator(".section-progress")).not.toHaveClass(/visible/);
   await expect(page.locator(".utility-dock")).toHaveClass(/dock-suppressed/);
+});
+
+test("contact navigation remains active at the end of the page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  await page.getByRole("button", { name: "Contato", exact: true }).click();
+  await expect
+    .poll(
+      () =>
+        page.locator("#contact").evaluate((node) => {
+          const rect = node.getBoundingClientRect();
+          const readingLine = window.innerHeight * 0.35;
+          return rect.top <= readingLine && rect.bottom > readingLine;
+        }),
+      { timeout: 10_000 },
+    )
+    .toBe(true);
+  await expect(
+    page.getByRole("button", { name: "Contato", exact: true }),
+  ).toHaveAttribute("aria-current", "location");
+  await expect(
+    page.getByRole("button", { name: "Formação", exact: true }),
+  ).not.toHaveAttribute("aria-current", "location");
 });
 
 test("project progress disappears after project cases", async ({ page }) => {
