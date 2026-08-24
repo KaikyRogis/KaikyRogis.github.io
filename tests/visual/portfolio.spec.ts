@@ -279,6 +279,34 @@ test("mobile dock avoids contact and footer", async ({ page }) => {
   await expect(page.locator(".utility-dock")).toHaveClass(/dock-suppressed/);
 });
 
+test("contact navigation remains active at the end of the page", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.addInitScript(() =>
+    sessionStorage.setItem("kaiky-os-visited", "1"),
+  );
+  await page.goto("/");
+  await page.getByRole("button", { name: "Contato", exact: true }).click();
+  await expect
+    .poll(
+      () =>
+        page.locator("#contact").evaluate((node) => {
+          const rect = node.getBoundingClientRect();
+          const readingLine = window.innerHeight * 0.35;
+          return rect.top <= readingLine && rect.bottom > readingLine;
+        }),
+      { timeout: 10_000 },
+    )
+    .toBe(true);
+  await expect(
+    page.getByRole("button", { name: "Contato", exact: true }),
+  ).toHaveAttribute("aria-current", "location");
+  await expect(
+    page.getByRole("button", { name: "Formação", exact: true }),
+  ).not.toHaveAttribute("aria-current", "location");
+});
+
 test("project progress disappears after project cases", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.addInitScript(() =>

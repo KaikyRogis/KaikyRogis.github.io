@@ -75,12 +75,35 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
   }, [reducedSystem]);
 
   useEffect(() => {
+    const navigationSectionIds = [
+      "about",
+      "capabilities",
+      "projects",
+      "labs",
+      "experience",
+      "skills",
+      "education",
+      "contact",
+    ];
+    const isAtPageEnd = () =>
+      window.scrollY + window.innerHeight >=
+      document.documentElement.scrollHeight - 8;
     const updateProgress = () => {
       const available =
         document.documentElement.scrollHeight - window.innerHeight;
       setPageProgress(
         available > 0 ? Math.round((window.scrollY / available) * 100) : 0,
       );
+      if (isAtPageEnd()) {
+        setActiveSection("contact");
+        return;
+      }
+      const readingLine = window.innerHeight * 0.35;
+      const currentSection = navigationSectionIds.find((id) => {
+        const rect = document.getElementById(id)?.getBoundingClientRect();
+        return rect && rect.top <= readingLine && rect.bottom > readingLine;
+      });
+      if (currentSection) setActiveSection(currentSection);
     };
     const observer = new IntersectionObserver(
       (entries) => {
@@ -98,33 +121,10 @@ export function PortfolioPage({ locale = "pt" }: { locale?: Locale }) {
       const node = document.getElementById(project.slug);
       if (node) observer.observe(node);
     });
-    const navigationObserver = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (visible) setActiveSection((visible.target as HTMLElement).id);
-      },
-      { rootMargin: "-28% 0px -60%", threshold: [0, 0.15, 0.4] },
-    );
-    [
-      "about",
-      "capabilities",
-      "projects",
-      "labs",
-      "experience",
-      "skills",
-      "education",
-      "contact",
-    ].forEach((id) => {
-      const node = document.getElementById(id);
-      if (node) navigationObserver.observe(node);
-    });
     window.addEventListener("scroll", updateProgress, { passive: true });
     updateProgress();
     return () => {
       observer.disconnect();
-      navigationObserver.disconnect();
       window.removeEventListener("scroll", updateProgress);
     };
   }, []);
